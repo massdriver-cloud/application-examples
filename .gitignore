@@ -1,2 +1,3 @@
 schema-*.json
 .terraform.lock.hcl
+*_variables.tf.json

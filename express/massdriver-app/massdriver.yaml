@@ -13,14 +13,7 @@ params:
       type: string
       default: default
     image:
-      type: object
-      properties:
-        repository:
-          type: string
-        sha:
-          type: string
-        tag:
-          type: string
+      type: string
     resource_requests:
       type: object
       properties:
@@ -95,6 +88,8 @@ ui:
     - envs
     - port
     - ingress
+  image:
+    ui:field: containerRepositoriesDropdown
   autoscaling:
     items:
       ui:order:
