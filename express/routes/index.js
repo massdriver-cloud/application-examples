@@ -1,18 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
-const mongoose = require("mongoose")
-
-const schema = mongoose.Schema({
-	title: String,
-	content: String,
-})
-
-const Post = mongoose.model("Post", schema)
+const Post = require("../models/post")
 
 router.get("/", async (req, res) => {
 	const posts = await Post.find()
-  res.render('posts', { data_posts: posts });
+  res.render('index', { data_posts: posts });
 })
 
 router.post("/", async (req, res) => {
@@ -22,8 +14,9 @@ router.post("/", async (req, res) => {
 	})
 	await post.save()
 
+  // cheap "refresh"
   const posts = await Post.find()
-  res.render('posts', { data_posts: posts });
+  res.render('index', { data_posts: posts });
 })
 
 module.exports = router;

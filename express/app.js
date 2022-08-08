@@ -6,8 +6,11 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
-const postsRouter = require('./routes/posts');
-const usersRouter = require('./routes/users');
+
+const mongoHost = process.env.MONGO_HOSTNAME || "localhost"
+const mongoPort = process.env.MONGO_PORT || "27017"
+
+var mongoConnectionString = `mongodb://${mongoHost}:${mongoPort}/database`;
 
 const app = express();
 
@@ -22,8 +25,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/posts', postsRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -41,7 +42,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var mongoConnectionString = `mongodb://${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/database`;
+
 
 mongoose
 	.connect(mongoConnectionString, { useNewUrlParser: true })
