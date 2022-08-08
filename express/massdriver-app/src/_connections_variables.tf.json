@@ -1,0 +1,13 @@
+{
+    "variable": {
+        "gcp_authentication": {
+            "type": "any"
+        },
+        "kubernetes_cluster": {
+            "type": "any"
+        },
+        "mongo_db": {
+            "type": "any"
+        }
+    }
+}

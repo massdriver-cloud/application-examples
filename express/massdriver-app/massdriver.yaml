@@ -1,0 +1,110 @@
+schema: draft-07
+name: express-app
+description: An example express application using Massdriver
+ref: github.com/YOUR_ORG/express-app
+access: private
+type: application
+
+params:
+  properties:
+    name:
+      type: string
+    namespace:
+      type: string
+      default: default
+    image:
+      type: object
+      properties:
+        repository:
+          type: string
+        sha:
+          type: string
+        tag:
+          type: string
+    resource_requests:
+      type: object
+      properties:
+        cpu:
+          type: string
+        memory:
+          type: string
+    port:
+      type: integer
+    autoscaling:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        minReplicas:
+          type: integer
+          default: 1
+        maxReplicas:
+          type: integer
+          default: 2
+        targetCPUUtilizationPercentage:
+          type: integer
+          default: 90
+    ingress:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        host:
+          type: string
+        path:
+          type: string
+          default: '/'
+    envs:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          value:
+            type: string
+
+dependencies:
+  kubernetes_cluster:
+    type: massdriver/kubernetes-cluster
+    required: true
+  gcp_authentication:
+    type: massdriver/gcp-service-account
+    required: true
+  mongo_db:
+    type: massdriver/mongo-authentication
+    required: true
+    envs:
+      - name: MONGO_USERNAME
+        path: data.authentication.username
+      - name: MONGO_PASSWORD
+        value: data.authentication.password
+      - name: MONGO_HOSTNAME
+        value: data.authentication.hostname
+      - name: MONGO_PORT
+        value: data.authentication.port
+
+ui:
+  ui:order:
+    - name
+    - namespace
+    - image
+    - resource_requests
+    - autoscaling
+    - envs
+    - port
+    - ingress
+  autoscaling:
+    items:
+      ui:order:
+        - enabled
+        - minReplicas
+        - maxReplicas
+        - targetCPUUtilizationPercentage
+  ingress:
+    items:
+      ui:order:
+        - enabled
+        - host
+        - path
