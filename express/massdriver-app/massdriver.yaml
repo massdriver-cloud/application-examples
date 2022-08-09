@@ -1,7 +1,7 @@
 schema: draft-07
 name: express-app
 description: An example express application using Massdriver
-ref: github.com/YOUR_ORG/express-app
+ref: github.com/massdrover-cloud/express-app
 access: private
 type: application
 
@@ -13,7 +13,12 @@ params:
       type: string
       default: default
     image:
-      type: string
+      type: object
+      properties:
+        repository:
+          type: string
+        tag:
+          type: string
     resource_requests:
       type: object
       properties:
@@ -72,11 +77,11 @@ dependencies:
       - name: MONGO_USERNAME
         path: data.authentication.username
       - name: MONGO_PASSWORD
-        value: data.authentication.password
+        path: data.authentication.password
       - name: MONGO_HOSTNAME
-        value: data.authentication.hostname
+        path: data.authentication.hostname
       - name: MONGO_PORT
-        value: data.authentication.port
+        path: data.authentication.port
 
 ui:
   ui:order:
@@ -89,7 +94,8 @@ ui:
     - port
     - ingress
   image:
-    ui:field: containerRepositoriesDropdown
+    repository:
+      ui:field: containerRepositoriesDropdown
   autoscaling:
     items:
       ui:order:
