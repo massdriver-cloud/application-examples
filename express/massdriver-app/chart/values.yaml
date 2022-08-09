@@ -26,7 +26,7 @@ autoscaling:
 
 ingress:
   annotations: {}
-  enabled: true
+  enabled: false
   className:
   host:
   path:

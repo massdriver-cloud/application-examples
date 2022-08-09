@@ -9,8 +9,11 @@ const indexRouter = require('./routes/index');
 
 const mongoHost = process.env.MONGO_HOSTNAME || "localhost"
 const mongoPort = process.env.MONGO_PORT || "27017"
+const mongoUser = process.env.MONGO_USERNAME || "root"
+const mongoPass = process.env.MONGO_PASSWORD || ""
 
 var mongoConnectionString = `mongodb://${mongoHost}:${mongoPort}/database`;
+console.log("Connecting to MongoDB at " + mongoConnectionString)
 
 const app = express();
 
@@ -45,7 +48,13 @@ app.use(function(err, req, res, next) {
 
 
 mongoose
-	.connect(mongoConnectionString, { useNewUrlParser: true })
+	.connect(mongoConnectionString, {
+    useNewUrlParser: true,
+    // auth: { authSource: "admin" },
+    authSource: "admin",
+    user: mongoUser,
+    pass: mongoPass,
+  })
 	.then(() => {
 		const app = express()
 

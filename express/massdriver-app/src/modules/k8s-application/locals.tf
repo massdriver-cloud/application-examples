@@ -11,8 +11,8 @@ locals {
   #     params.auto.tfvars.json
   #     main.tf
   app_specification = yamldecode(file("${path.root}/../massdriver.yaml"))
-  connections       = jsondecode(file("${path.root}/connections.auto.tfvars.json"))
-  params            = jsondecode(file("${path.root}/params.auto.tfvars.json"))
+  connections       = jsondecode(file("${path.root}/dev.connections.tfvars.json"))
+  params            = jsondecode(file("${path.root}/dev.params.tfvars.json"))
   # this is because the CLI creates a chart directory and copies from where the app.yaml specified
   # to this expected directory name
   # https://github.com/massdriver-cloud/massdriver-cli/blob/1564f1bb81aadcc5221095bf9bde062e375291a0/pkg/application/package.go#L63
