@@ -1,6 +1,8 @@
 version: "3"
 
 services:
+  # https://www.stackbuilders.com/blog/todo-with-postgresql-cdc-phoenix/
+  # https://hexdocs.pm/phoenix/ecto.html
   database:
     image: postgres:latest
     environment:
