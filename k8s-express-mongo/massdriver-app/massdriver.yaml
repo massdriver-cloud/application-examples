@@ -1,7 +1,7 @@
 schema: draft-07
 name: express-app-demo
 description: An example express application using Massdriver
-ref: github.com/massdrover-cloud/express-app-demo
+ref: https://github.com/massdriver-cloud/application-examples/tree/main/k8s-express-mongo
 access: private
 type: application
 
@@ -52,7 +52,7 @@ params:
           type: string
         path:
           type: string
-          default: '/'
+          default: "/"
     envs:
       type: array
       items:
@@ -84,6 +84,11 @@ dependencies:
         path: data.authentication.port
 
 ui:
+  image:
+    repository:
+      # ui:field: containerRepositoriesDropdown
+      # cloud: aws
+
   ui:order:
     - name
     - namespace
@@ -93,9 +98,7 @@ ui:
     - envs
     - port
     - ingress
-  # image:
-  #   repository:
-  #     ui:field: containerRepositoriesDropdown
+
   autoscaling:
     items:
       ui:order:
