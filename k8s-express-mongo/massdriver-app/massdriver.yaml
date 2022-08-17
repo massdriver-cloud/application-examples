@@ -1,5 +1,5 @@
 schema: draft-07
-name: express-app-aws-demo
+name: express-app-demo
 description: An example express application using Massdriver
 ref: https://github.com/massdriver-cloud/application-examples/tree/main/k8s-express-mongo
 access: private
