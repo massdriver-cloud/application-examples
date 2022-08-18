@@ -18,10 +18,6 @@ output "merged_policies" {
   value = local.merged_policies_map
 }
 
-output "helm_chart" {
-  value = local.helm_chart
-}
-
 output "helm_additional_values" {
   value = local.helm_additional_values
 }

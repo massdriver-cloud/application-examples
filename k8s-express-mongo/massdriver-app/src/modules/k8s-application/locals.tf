@@ -1,26 +1,21 @@
 locals {
-  # directory structure in provisoner env
-  # bundle/
-  #   app.yaml
+  # directory structure
+  # application/
+  #   massdriver.yaml
   #   chart/
-  #   k8s-application/
-  #     shared terraform
   #   src/
   #     path.root is from this context
   #     connections.auto.tfvars.json
   #     params.auto.tfvars.json
   #     main.tf
-  app_specification = yamldecode(file("${path.root}/../app.yaml"))
+  app_specification = yamldecode(file("${path.root}/../massdriver.yaml"))
   connections       = jsondecode(file("${path.root}/connections.auto.tfvars.json"))
   params            = jsondecode(file("${path.root}/params.auto.tfvars.json"))
-  # this is because the CLI creates a chart directory and copies from where the app.yaml specified
-  # to this expected directory name
-  # https://github.com/massdriver-cloud/massdriver-cli/blob/1564f1bb81aadcc5221095bf9bde062e375291a0/pkg/application/package.go#L63
-  helm_chart = "${path.root}/chart"
+  app_block         = lookup(local.app_specification, "app", {})
 
   helm_additional_values = {
     envs = concat(
-      local.params.envs,
+      lookup(local.params, "envs", []),
       local.result_envs
     )
     ingress = {
@@ -31,4 +26,11 @@ locals {
       }
     }
   }
+  # helm_additional_values_gcp = mdxc_application_identity.main.cloud == "gcp" ? {
+  #   serviceAccount = {
+  #     annotations = {
+  #       "iam.gke.io/gcp-service-account" = (mdxc_application_identity.main).gcp_application_identity.service_account_email
+  #     }
+  #   }
+  # } : {}
 }

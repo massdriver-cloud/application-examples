@@ -84,10 +84,10 @@ app:
     MONGO_PORT: connections.mongo_db.data.authentication.port
 
 ui:
-  image:
-    repository:
-      # ui:field: containerRepositoriesDropdown
-      # cloud: aws
+  # image:
+  #   repository:
+  #     # ui:field: containerRepositoriesDropdown
+  #     # cloud: aws
 
   ui:order:
     - name

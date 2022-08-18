@@ -1,10 +1,12 @@
 locals {
-  dependency_to_policy_map = flatten([for dep_key, dep_value in local.app_specification.dependencies :
+  app_policies = lookup(local.app_block, "policies", [])
+
+  dependency_to_policy_map = flatten([for policy in local.app_policies :
     {
-      "dependency" = dep_key,
-      "policies"   = lookup(dep_value, "policies", [])
+      "dependency" = split(policy, ".")[1],
+      "policies"   = [split(policy, ".")[4]]
     }
-    if lookup(dep_value, "policies", "") != ""]
+    if true]
   )
   # for _every_ dependency (1-to-many)
   #   for _every_ policy (1-to-many)

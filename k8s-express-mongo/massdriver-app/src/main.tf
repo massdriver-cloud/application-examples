@@ -4,7 +4,7 @@ module "k8s_application" {
 
 resource "helm_release" "application" {
   name             = module.k8s_application.params.md_metadata.name_prefix
-  chart            = module.k8s_application.helm_chart
+  chart            = "${path.module}/../chart"
   namespace        = module.k8s_application.params.namespace
   create_namespace = true
   force_update     = true
