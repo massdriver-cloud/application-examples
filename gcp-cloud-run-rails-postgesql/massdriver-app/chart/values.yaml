@@ -1,3 +1,4 @@
+namespace: default
 image:
   repository:
   tag:
@@ -14,8 +15,14 @@ serviceAccount:
   annotations: {}
   name:
 
-resourceRequests: {}
-resourceLimits: {}
+resourceRequests: {
+  cpu: 100m,
+  memory: 128Mi
+}
+resourceLimits: {
+  cpu: 100m,
+  memory: 128Mi
+}
 
 replicaCount:
 autoscaling:

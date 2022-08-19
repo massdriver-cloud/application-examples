@@ -1,27 +1,35 @@
 FROM ruby:2.7.6-alpine
 
-RUN apk add --no-cache --update build-base \
-    linux-headers \
-    git \
-    postgresql-dev \
-    nodejs \
-    yarn \
-    tzdata
+ENV APP_PATH /app
+ENV BUNDLE_VERSION 2.1.4
+ENV BUNDLE_PATH /usr/local/bundle/gems
+ENV TMP_PATH /tmp/
+ENV RAILS_LOG_TO_STDOUT true
 
-ENV RAILS_ENV=production
-RUN bundle config set without 'development test'
+# copy entrypoint scripts and grant execution permissions
+COPY ./dev-docker-entrypoint.sh /usr/local/bin/dev-entrypoint.sh
+COPY ./test-docker-entrypoint.sh /usr/local/bin/test-entrypoint.sh
+RUN chmod +x /usr/local/bin/dev-entrypoint.sh && chmod +x /usr/local/bin/test-entrypoint.sh
 
-WORKDIR /app
+# install dependencies for application
+RUN apk -U add --no-cache \
+  build-base \
+  git \
+  postgresql-dev \
+  postgresql-client \
+  libxml2-dev \
+  libxslt-dev \
+  nodejs \
+  yarn \
+  imagemagick \
+  tzdata \
+  less \
+  && rm -rf /var/cache/apk/* \
+  && mkdir -p $APP_PATH
 
-# Gemfile.lock
-COPY Gemfile  /app
-RUN bundle lock --add-platform x86_64-linux
-RUN bundle install
-RUN echo "export PATH=`pwd`/bin:$PATH" >> /etc/profile
 
-COPY . .
-RUN bundle install
-# RUN RAILS_ENV=production bundle exec rake assets:precompile
+RUN gem install bundler --version "$BUNDLE_VERSION" \
+  && rm -rf $GEM_HOME/cache/*
 
 EXPOSE 3000
 

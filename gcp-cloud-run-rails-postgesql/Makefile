@@ -1,6 +1,6 @@
-LOCAL_LATEST=k8s-express-demo:latest
-ECR_LATEST=083014189801.dkr.ecr.us-west-2.amazonaws.com/application-examples/k8s-express-demo:latest
-GCR_LATEST=us-west2-docker.pkg.dev/md-wbeebe-0808-example-apps/application-examples/k8s-express-demo:latest
+LOCAL_LATEST=k8s-rails-postgresql:latest
+ECR_LATEST=083014189801.dkr.ecr.us-west-2.amazonaws.com/application-examples/k8s-rails-postgresql:latest
+GCR_LATEST=us-west2-docker.pkg.dev/md-wbeebe-0808-example-apps/application-examples/k8s-rails-postgresql:latest
 
 .PHONY: build
 build:
