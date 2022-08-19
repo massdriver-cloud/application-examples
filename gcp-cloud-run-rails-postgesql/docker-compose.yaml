@@ -22,6 +22,8 @@ services:
     entrypoint: dev-entrypoint.sh
     command: ['rails', 'server', '-p', '3000', '-b', '0.0.0.0']
     # command: ['rails', 'db:create']
+    # command: ['rails', 'db:migrate']
+    # command: ['rails', 'g', 'scaffold', 'todo_list', 'title:string', 'content:text']
     ports:
       - "3000:3000"
     volumes:
