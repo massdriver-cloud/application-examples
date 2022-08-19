@@ -1,0 +1,109 @@
+schema: draft-07
+name: gcp-cloud-run-rails-postgresql
+description: A lightweight rails application running on Massdriver
+ref: github.com/massdriver-cloud/gcp-cloud-run-rails-postgresql
+access: private
+type: application
+
+params:
+  properties:
+    name:
+      type: string
+    namespace:
+      type: string
+      default: default
+    image:
+      type: object
+      properties:
+        repository:
+          type: string
+        sha:
+          type: string
+        tag:
+          type: string
+    resource_requests:
+      type: object
+      properties:
+        cpu:
+          type: string
+        memory:
+          type: string
+    port:
+      type: integer
+    autoscaling:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        minReplicas:
+          type: integer
+          default: 1
+        maxReplicas:
+          type: integer
+          default: 2
+        targetCPUUtilizationPercentage:
+          type: integer
+          default: 90
+    ingress:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        host:
+          type: string
+        path:
+          type: string
+          default: '/'
+    envs:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          value:
+            type: string
+
+connections:
+  required:
+    - gcp_authentication
+    - kubernetes_cluster
+    - database
+  properties:
+    gcp_authentication:
+      $ref: massdriver/gcp-service-account
+    kubernetes_cluster:
+      $ref: massdriver/kubernetes-cluster
+    database:
+      $ref: massdriver/kubernetes-cluster
+
+app:
+  envs:
+    DB_HOST: connections.database.data.authentication.hostname
+    DB_USER: connections.database.data.authentication.user
+    DB_PASS: connections.database.data.authentication.password
+
+ui:
+  ui:order:
+    - name
+    - namespace
+    - image
+    - resource_requests
+    - autoscaling
+    - envs
+    - port
+    - ingress
+  autoscaling:
+    items:
+      ui:order:
+        - enabled
+        - minReplicas
+        - maxReplicas
+        - targetCPUUtilizationPercentage
+  ingress:
+    items:
+      ui:order:
+        - enabled
+        - host
+        - path
