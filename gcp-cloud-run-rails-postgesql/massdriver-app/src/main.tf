@@ -1,17 +1,7 @@
-module "k8s_application" {
-  source = "./modules/k8s-application"
+module "cloud_run_application" {
+  source          = "github.com/massdriver-cloud/terraform-modules//massdriver-application-gcp-cloud-run"
+  location        = var.location
+  container_image = "${var.container.repository}/${var.container.image}:${var.container.tag}"
+  endpoint        = var.endpoint
 }
 
-resource "helm_release" "application" {
-  name             = module.k8s_application.params.md_metadata.name_prefix
-  chart            = module.k8s_application.helm_chart
-  namespace        = module.k8s_application.params.namespace
-  create_namespace = true
-  force_update     = true
-
-  values = [
-    fileexists("${path.module}/../chart/values.yaml") ? file("${path.module}/../chart/values.yaml") : "",
-    yamlencode(module.k8s_application.params),
-    yamlencode(local.helm_additional_values)
-  ]
-}

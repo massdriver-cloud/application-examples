@@ -53,41 +53,32 @@ params:
         path:
           type: string
           default: "/"
-    envs:
-      type: array
-      items:
-        type: object
-        properties:
-          name:
-            type: string
-          value:
-            type: string
 
-dependencies:
-  kubernetes_cluster:
-    type: massdriver/kubernetes-cluster
-    required: true
-  gcp_authentication:
-    type: massdriver/gcp-service-account
-    required: true
-  mongo_db:
-    type: massdriver/mongo-authentication
-    required: true
-    envs:
-      - name: MONGO_USERNAME
-        path: data.authentication.username
-      - name: MONGO_PASSWORD
-        path: data.authentication.password
-      - name: MONGO_HOSTNAME
-        path: data.authentication.hostname
-      - name: MONGO_PORT
-        path: data.authentication.port
+connections:
+  required:
+    - kubernetes_cluster
+    - gcp_authentication
+    - mongo_db
+  properties:
+    kubernetes_cluster:
+      $ref: massdriver/kubernetes-cluster
+    gcp_authentication:
+      $ref: massdriver/gcp-service-account
+    mongo_db:
+      $ref: massdriver/mongo-authentication
+
+app:
+  envs:
+    MONGO_USERNAME: .connections.mongo_db.data.authentication.username
+    MONGO_PASSWORD: .connections.mongo_db.data.authentication.password
+    MONGO_HOSTNAME: .connections.mongo_db.data.authentication.hostname
+    MONGO_PORT: .connections.mongo_db.data.authentication.port
 
 ui:
-  image:
-    repository:
-      # ui:field: containerRepositoriesDropdown
-      # cloud: aws
+  # image:
+  #   repository:
+  #     ui:field: containerRepositoriesDropdown
+  #     cloud: gcp
 
   ui:order:
     - name

@@ -7,12 +7,6 @@ type: application
 
 params:
   properties:
-    name:
-      type: string
-      title: Name
-    # namespace:
-    #   type: string
-    #   default: default
     image:
       type: object
       title: Container Image
@@ -79,6 +73,8 @@ connections:
       $ref: massdriver/kubernetes-cluster
     database:
       $ref: massdriver/postgresql-authentication
+    cache:
+      $ref: massdriver/redis-authentication
 
 app:
   envs:
@@ -86,6 +82,7 @@ app:
     DB_USER: connections.database.data.authentication.username
     DB_PASS: connections.database.data.authentication.password
     DB_PORT: connections.database.data.authentication.port
+    REDIS_HOST: connections.cache.data.authentication.hostname
 
 ui:
   ui:order:
