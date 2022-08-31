@@ -13,6 +13,7 @@ services:
       dockerfile: Dockerfile.dev
       context: .
     environment:
+      DB_HOST: 127.0.0.1
       DB_HOST: database
       DB_USER: postgres
       DB_PASS: example
@@ -26,7 +27,7 @@ services:
     # command: ['rails', 'db:migrate']
     # command: ['rails', 'g', 'scaffold', 'todo_list', 'title:string', 'content:text']
     ports:
-      - "3000:8080"
+      - "3000:3000"
     volumes:
       - .:/var/app
       - shared_data_v:/var/shared
@@ -45,6 +46,4 @@ services:
     volumes:
       - db_data_v:/var/lib/postgresql/data
       - shared_data_v:/var/shared
-    # ports:
-    #   - "5432:5432"
 

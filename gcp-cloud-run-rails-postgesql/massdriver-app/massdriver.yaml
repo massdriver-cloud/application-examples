@@ -7,8 +7,9 @@ type: application
 
 app:
   envs:
-    # DB_HOST: .connections.database.data.authentication.hostname
-    DB_HOST: '@text "md-wbeebe-0808-example-apps:us-west2:example-dev-postgresql-hy9l"'
+    DB_HOST: .connections.database.data.authentication.hostname
+    RAILS_SERVE_STATIC_FILES: '@text "true"'
+    # DB_HOST: '@text "md-wbeebe-0808-example-apps:us-west2:example-dev-postgresql-hy9l"'
     DB_USER: .connections.database.data.authentication.username
     DB_PASS: .connections.database.data.authentication.password
     DB_PORT: .connections.database.data.authentication.port

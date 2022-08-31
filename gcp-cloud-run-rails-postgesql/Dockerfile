@@ -35,9 +35,9 @@ RUN gem install bundler --version "$BUNDLE_VERSION" \
 COPY Gemfile Gemfile.lock .
 RUN bundle install
 COPY . .
+RUN bundle exec rails assets:precompile
 
 ENV PORT 8080
 EXPOSE $PORT
 
-# CMD ["sh", "-c", "bundle exec rails s -b 0.0.0.0 -p $PORT" ]
-CMD ["sh", "-c", "bundle exec rails db:create && bundle exec rails s -b 0.0.0.0 -p $PORT" ]
+CMD ["sh", "-c", "bundle exec rails s -b 0.0.0.0 -p $PORT" ]
