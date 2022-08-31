@@ -26,7 +26,7 @@ services:
     # command: ['rails', 'db:migrate']
     # command: ['rails', 'g', 'scaffold', 'todo_list', 'title:string', 'content:text']
     ports:
-      - "3000:3000"
+      - "3000:8080"
     volumes:
       - .:/var/app
       - shared_data_v:/var/shared

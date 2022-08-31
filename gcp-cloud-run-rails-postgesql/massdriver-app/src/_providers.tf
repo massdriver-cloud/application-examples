@@ -1,6 +1,10 @@
 terraform {
   required_version = ">= 1.0"
   required_providers {
+    mdxc = {
+      source  = "massdriver-cloud/mdxc"
+      version = "0.0.5"
+    }
     massdriver = {
       source = "massdriver-cloud/massdriver"
     }
@@ -10,33 +14,29 @@ terraform {
     google = {
       source = "hashicorp/google"
     }
-    helm = {
-      source = "hashicorp/helm"
+    google-beta = {
+      source = "hashicorp/google-beta"
     }
   }
 }
 
 locals {
-  gcp_authentication = module.k8s_application.connections.gcp_authentication
-  kubernetes_cluster = module.k8s_application.connections.kubernetes_cluster
-  gcp_region         = split("/", local.kubernetes_cluster.data.infrastructure.grn)[3]
-  gcp_project_id     = local.gcp_authentication.data.project_id
-
-  k8s_host                  = local.kubernetes_cluster.data.authentication.cluster.server
-  k8s_certificate_authority = base64decode(local.kubernetes_cluster.data.authentication.cluster.certificate-authority-data)
-  k8s_token                 = local.kubernetes_cluster.data.authentication.user.token
+  gcp_project_id = var.gcp_authentication.data.project_id
 }
 
 provider "google" {
   project     = local.gcp_project_id
-  credentials = jsonencode(local.gcp_authentication.data)
-  region      = local.gcp_region
+  credentials = jsonencode(var.gcp_authentication.data)
 }
 
-provider "helm" {
-  kubernetes {
-    host                   = local.k8s_host
-    cluster_ca_certificate = local.k8s_certificate_authority
-    token                  = local.k8s_token
+provider "google-beta" {
+  project     = local.gcp_project_id
+  credentials = jsonencode(var.gcp_authentication.data)
+}
+
+provider "mdxc" {
+  gcp = {
+    project     = local.gcp_project_id
+    credentials = jsonencode(var.gcp_authentication.data)
   }
 }

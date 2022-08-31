@@ -5,6 +5,7 @@ ENV BUNDLE_VERSION 2.1.4
 ENV BUNDLE_PATH /usr/local/bundle/gems
 ENV TMP_PATH /tmp/
 ENV RAILS_LOG_TO_STDOUT true
+ENV RAILS_ENV production
 
 # copy entrypoint scripts and grant execution permissions
 COPY ./dev-docker-entrypoint.sh /usr/local/bin/dev-entrypoint.sh
@@ -31,6 +32,12 @@ RUN apk -U add --no-cache \
 RUN gem install bundler --version "$BUNDLE_VERSION" \
   && rm -rf $GEM_HOME/cache/*
 
-EXPOSE 3000
+COPY Gemfile Gemfile.lock .
+RUN bundle install
+COPY . .
 
-CMD [ "rails", "s", "-b", "0.0.0.0" ]
+ENV PORT 8080
+EXPOSE $PORT
+
+# CMD ["sh", "-c", "bundle exec rails s -b 0.0.0.0 -p $PORT" ]
+CMD ["sh", "-c", "bundle exec rails db:create && bundle exec rails s -b 0.0.0.0 -p $PORT" ]

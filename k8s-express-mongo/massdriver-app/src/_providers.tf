@@ -1,6 +1,9 @@
 terraform {
   required_version = ">= 1.0"
   required_providers {
+    mdxc = {
+      source = "massdriver-cloud/mdxc"
+    }
     massdriver = {
       source = "massdriver-cloud/massdriver"
     }
@@ -17,8 +20,8 @@ terraform {
 }
 
 locals {
-  gcp_authentication = module.k8s_application.connections.gcp_authentication
-  kubernetes_cluster = module.k8s_application.connections.kubernetes_cluster
+  gcp_authentication = var.gcp_authentication
+  kubernetes_cluster = var.kubernetes_cluster
   gcp_region         = split("/", local.kubernetes_cluster.data.infrastructure.grn)[3]
   gcp_project_id     = local.gcp_authentication.data.project_id
 
@@ -38,5 +41,12 @@ provider "helm" {
     host                   = local.k8s_host
     cluster_ca_certificate = local.k8s_certificate_authority
     token                  = local.k8s_token
+  }
+}
+
+provider "mdxc" {
+  gcp = {
+    project     = local.gcp_project_id
+    credentials = jsonencode(var.gcp_authentication.data)
   }
 }
