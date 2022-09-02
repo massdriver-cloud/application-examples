@@ -14,6 +14,8 @@ app:
     DB_PASS: .connections.database.data.authentication.password
     DB_PORT: .connections.database.data.authentication.port
     REDIS_HOST: .connections.cache.data.authentication.hostname
+  policies:
+    - .connections.topic.data.security.iam.publisher
 
 params:
   examples:
@@ -70,6 +72,7 @@ connections:
     - gcp_global_network
     - database
     - cache
+    - topic
   properties:
     gcp_authentication:
       $ref: massdriver/gcp-service-account
@@ -79,6 +82,8 @@ connections:
       $ref: massdriver/postgresql-authentication
     cache:
       $ref: massdriver/redis-authentication
+    topic:
+      $ref: massdriver/gcp-pubsub-topic
 
 ui:
   ui:order:

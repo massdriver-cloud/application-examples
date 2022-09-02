@@ -5,6 +5,13 @@ ref: https://github.com/massdriver-cloud/application-examples/tree/main/k8s-expr
 access: private
 type: application
 
+app:
+  envs:
+    MONGO_USERNAME: .connections.mongo_db.data.authentication.username
+    MONGO_PASSWORD: .connections.mongo_db.data.authentication.password
+    MONGO_HOSTNAME: .connections.mongo_db.data.authentication.hostname
+    MONGO_PORT: .connections.mongo_db.data.authentication.port
+
 params:
   properties:
     name:
@@ -66,13 +73,6 @@ connections:
       $ref: massdriver/gcp-service-account
     mongo_db:
       $ref: massdriver/mongo-authentication
-
-app:
-  envs:
-    MONGO_USERNAME: .connections.mongo_db.data.authentication.username
-    MONGO_PASSWORD: .connections.mongo_db.data.authentication.password
-    MONGO_HOSTNAME: .connections.mongo_db.data.authentication.hostname
-    MONGO_PORT: .connections.mongo_db.data.authentication.port
 
 ui:
   # image:
