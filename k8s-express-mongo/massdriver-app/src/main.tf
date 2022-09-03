@@ -1,17 +1,8 @@
-module "k8s_application" {
-  source = "./modules/k8s-application"
+module "helm_application" {
+  source             = "github.com/massdriver-cloud/terraform-modules//massdriver-application-helm"
+  name               = var.md_metadata.name_prefix
+  namespace          = "default"
+  chart              = "${path.module}/chart"
+  kubernetes_cluster = var.kubernetes_cluster
 }
 
-resource "helm_release" "application" {
-  name             = module.k8s_application.params.md_metadata.name_prefix
-  chart            = module.k8s_application.helm_chart
-  namespace        = module.k8s_application.params.namespace
-  create_namespace = true
-  force_update     = true
-
-  values = [
-    fileexists("${path.module}/../chart/values.yaml") ? file("${path.module}/../chart/values.yaml") : "",
-    yamlencode(module.k8s_application.params),
-    yamlencode(local.helm_additional_values)
-  ]
-}
