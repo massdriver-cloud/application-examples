@@ -1,0 +1,113 @@
+schema: draft-07
+name: gcp-cloud-run-rails-postgresql
+description: A lightweight rails application running on Massdriver
+ref: github.com/massdriver-cloud/application-examples
+access: private
+type: application
+
+app:
+  envs:
+    DB_HOST: .connections.database.data.authentication.hostname
+    RAILS_SERVE_STATIC_FILES: '@text "true"'
+    # DB_HOST: '@text "md-wbeebe-0808-example-apps:us-west2:example-dev-postgresql-hy9l"'
+    DB_USER: .connections.database.data.authentication.username
+    DB_PASS: .connections.database.data.authentication.password
+    DB_PORT: .connections.database.data.authentication.port
+    REDIS_HOST: .connections.cache.data.authentication.hostname
+  policies:
+    - .connections.topic.data.security.iam.publisher
+
+params:
+  examples:
+    - __name: "API"
+      endpoint:
+        enabled: true
+        subdomain: api
+  properties:
+    location:
+      title: Region
+      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-region.json
+      $md.immutable: true
+    container:
+      type: object
+      title: Container
+      properties:
+        repository:
+          type: string
+          title: Repository
+        image:
+          type: string
+          title: Image
+        tag:
+          type: string
+          title: Tag
+    endpoint:
+      type: object
+      title: Endpoint
+      description: Configure a public endpoint with DNS and a SSL certificate.
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+      dependencies:
+        enabled:
+          oneOf:
+            - properties:
+                enabled:
+                  const: true
+                zone:
+                  $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-dns-managed-zone.json
+                  title: ""
+                subdomain:
+                  type: string
+                  title: Subdomain
+                  default: api
+            - properties:
+                enabled:
+                  const: false
+
+connections:
+  required:
+    - gcp_authentication
+    - gcp_global_network
+    - database
+    - cache
+    - topic
+  properties:
+    gcp_authentication:
+      $ref: massdriver/gcp-service-account
+    gcp_global_network:
+      $ref: massdriver/gcp-service-account
+    database:
+      $ref: massdriver/postgresql-authentication
+    cache:
+      $ref: massdriver/redis-authentication
+    topic:
+      $ref: massdriver/gcp-pubsub-topic
+
+ui:
+  ui:order:
+    - location
+    - container
+    - endpoint
+    - "*"
+  location:
+    ui:field: regionsDropdown
+    cloud: gcp
+  container:
+    ui:order:
+      - repository
+      - image
+      - tag
+    # repository:
+    #   ui:field: containerRepositoriesDropdown
+    #   cloud: gcp
+  endpoint:
+    ui:order:
+      - enabled
+      - zone
+      - subdomain
+    zone:
+      name:
+        ui:field: dnsZonesDropdown
+        cloud: gcp
