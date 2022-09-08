@@ -11,5 +11,6 @@ This example application bundles will run on AWS EKS, Azure AKS, and GCP GKE.
 
 ## Source Code for Example Applications
 
-* Express / Mongo Guestbook - [Source Code](https://github.com/massdriver-cloud/express-mongo-guestbook)
-* Elixir / Phoenix Chat Example - [Source Code](https://github.com/massdriver-cloud/phoenix-chat-example)
+* Express / Mongo Guestbook - [Source Code](https://github.com/massdriver-cloud/express-mongo-guestbook) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/express-mongo-guestbook)
+
+* Elixir / Phoenix Chat Example - [Source Code](https://github.com/massdriver-cloud/phoenix-chat-example) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/phoenix-chat-example)
