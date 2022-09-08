@@ -1,6 +1,6 @@
 # phoenix-chat
 
-A Phoenix / Elixir application demo running [dwyl/phoenix-chat-example](git@github.com:coryodaniel/phoenix-chat-example.git)
+A Phoenix / Elixir application demo running [dwyl/phoenix-chat-example](https://github.com/massdriver-cloud/phoenix-chat-example)
 
 ## Massdriver `kubernetes-deployment` Template
 
