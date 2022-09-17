@@ -1,6 +1,6 @@
 schema: draft-07
 name: lambda-transform
-description: reads data from sqs, performs a data transform, and writes the transformed data to the next topic.
+description: Reads data from sqs, performs a data transform, and writes the transformed data to the next topic.
 source_url: github.com/massdriver_cloud/application_examples/aws/lambda-transform
 access: private
 type: application
