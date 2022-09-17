@@ -18,7 +18,7 @@ params:
         - addend
       properties:
         addend:
-          title: Addened
+          title: Addend
           description: The number to add to the value that is specified in the message from SQS
           type: integer
           default: 1
