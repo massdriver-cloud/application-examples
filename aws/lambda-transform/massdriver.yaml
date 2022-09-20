@@ -1,0 +1,142 @@
+schema: draft-07
+name: lambda-transform
+description: Reads data from sqs, performs a data transform, and writes the transformed data to the next topic.
+source_url: github.com/massdriver_cloud/application_examples/aws/lambda-transform
+access: private
+type: application
+
+params:
+  required:
+    - region
+  properties:
+    region:
+      title: AWS Region 
+      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/aws-region.json
+    application:
+      type: object
+      required: 
+        - addend
+      properties:
+        addend:
+          title: Addend
+          description: The number to add to the value that is specified in the message from SQS
+          type: integer
+          default: 1
+    runtime:
+      type: object
+      title: Runtime Settings
+      required:
+        - image
+        - memory_size
+        - execution_timeout
+      properties:
+        image:
+          type: object
+          title: "Container Image"
+          required:
+            - uri
+            - tag
+          properties:
+            uri:
+              title: ECR URI
+              description: Container which will provide the runtime for each execution of the function.
+              type: string
+            tag:
+              title: ECR image tag
+              description: Specific version of the container to pull on each deployment of the lambda function.
+              type: string
+              default: latest
+        memory_size:
+          type: integer
+          title: Runtime Memory Limit (MB)
+          description: "Memory allotted for a single execution run. This will determine the price per millisecond."
+          default: 128
+          minimum: 128
+          maximum: 10240
+        execution_timeout:
+          type: integer
+          title: Execution Timeout (Seconds)
+          description: "Maximum execution time. After the allotted time, the lambda will halt execution."
+          default: 3
+          minimum: 3
+          maximum: 900
+    observability:
+      type: object
+      title: "Observability Settings"
+      required:
+        - retention_days
+      properties:
+        x-ray:
+          type: object
+          title: X-Ray
+          description: "Enable distributed tracing with Amazon X-Ray"
+          properties:
+            enabled:
+              type: boolean
+              default: false
+        retention_days:
+          type: integer
+          title: Log retention days
+          description: "Rotation interval for AWS Cloudwatch logs."
+          oneOf:
+            - title: 7 days
+              const: 7
+            - title: 30 days
+              const: 30
+            - title: 90 days
+              const: 60
+            - title: 180 days
+              const: 180
+            - title: 1 year
+              const: 365
+            - title: Never expire
+              const: 0
+
+connections:
+  required:
+    - aws_authentication
+  properties:
+    aws_authentication:
+      $ref: massdriver/aws-iam-role
+    event_source:
+      $ref: massdriver/aws-sqs-queue
+    destination:
+      $ref: massdriver/aws-sns-topic
+
+ui:
+  ui:order:
+    - region
+    - application
+    - runtime
+    - observability
+  region:
+    ui:field: supportedCloudLocationsDropdown
+    cloudService: AWS
+  runtime:
+    ui:order:
+      - image
+      - memory_size
+      - execution_timeout
+    image:
+      ui:order:
+        - uri
+        - tag
+    memory_size:
+      ui:field: conversionFieldData
+      unit: MB
+    execution_timeout:
+      ui:field: conversionFieldTime
+      unit: Seconds
+  observability:
+    ui:order:
+      - retention_days
+      - x-ray
+
+app:
+  envs:
+    SNS_TOPIC_ARN: .connections.destination.data.infrastructure.arn
+    ADDEND: .params.application.addend
+    REGION: .connections.destination.specs.aws.region
+  policies:
+    - .connections.event_source.data.security.iam.subscribe
+    - .connections.destination.data.security.iam.publish
