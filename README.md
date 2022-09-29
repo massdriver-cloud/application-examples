@@ -6,11 +6,14 @@ Example applications bundles to run on [massdriver](https://massdriver.cloud).
 
 This example application bundles will run on AWS EKS, Azure AKS, and GCP GKE.
 
-* [Express / Mongo Guestbook](./k8s/express-mongo-guestbook/) - Guestbook application running on Express JS and MongoDB
-* [Elixir / Phoenix Chat Example](./k8s/phoenix-chat-example) - Chat application running on Elixir/Phoenix & Postgres 13 (AWS RDS, Cloud SQL, etc)
+- [Express / Mongo Guestbook](./k8s/express-mongo-guestbook/) - Guestbook application running on Express JS and MongoDB
+- [Elixir / Phoenix Chat Example](./k8s/phoenix-chat-example) - Chat application running on Elixir/Phoenix & Postgres 13 (AWS RDS, Cloud SQL, etc)
+- [Rails / PostgreSQL TODO List](./gcp/cloud-run-postgresql) - Ruby on Rails TODO List application running on Rails 7 & Postgres 12 (GCP Cloud PostgreSQL, Cloud Run, etc)
 
 ## Source Code for Example Applications
 
-* Express / Mongo Guestbook - [Source Code](https://github.com/massdriver-cloud/express-mongo-guestbook) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/express-mongo-guestbook)
+- Express / Mongo Guestbook - [Source Code](https://github.com/massdriver-cloud/express-mongo-guestbook) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/express-mongo-guestbook)
 
-* Elixir / Phoenix Chat Example - [Source Code](https://github.com/massdriver-cloud/phoenix-chat-example) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/phoenix-chat-example)
+- Elixir / Phoenix Chat Example - [Source Code](https://github.com/massdriver-cloud/phoenix-chat-example) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/phoenix-chat-example)
+
+- Rails / PostgreSQL TODO List - [Source Code](https://github.com/massdriver-cloud/rails-postgresSQL-todolist) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/rails-postgresql-example)
