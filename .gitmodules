@@ -1,0 +1,3 @@
+[submodule "azure/app-service/nopCommerce"]
+	path = azure/app-service/nopCommerce
+	url = https://github.com/nopSolutions/nopCommerce.git
