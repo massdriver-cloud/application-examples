@@ -3,5 +3,5 @@
 	url = git@github.com:container-labs/node-express-mongoose-demo.git
 
 [submodule "azure/app-service/nopCommerce"]
-	path = azure/app-service/nopCommerce
+	path = azure/app-service/app
 	url = https://github.com/nopSolutions/nopCommerce.git
