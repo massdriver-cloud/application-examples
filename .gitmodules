@@ -1,0 +1,3 @@
+[submodule "k8s/express-mongoose-demo/app"]
+	path = k8s/express-mongoose-demo/app
+	url = git@github.com:container-labs/node-express-mongoose-demo.git
