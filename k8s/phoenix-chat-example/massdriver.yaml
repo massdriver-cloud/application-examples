@@ -1,7 +1,7 @@
 schema: draft-07
 name: phoenix-chat
 description: A Phoenix / Elixir application demo running dwyl/phoenix-chat-example
-ref: github.com/massdriver-cloud/application-examples/tree/main/phoenix-chat
+source_url: github.com/massdriver-cloud/application-examples/tree/main/phoenix-chat
 access: private
 type: application
 
