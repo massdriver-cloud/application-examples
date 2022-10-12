@@ -1,3 +1,7 @@
 [submodule "k8s/express-mongoose-demo/app"]
 	path = k8s/express-mongoose-demo/app
 	url = git@github.com:container-labs/node-express-mongoose-demo.git
+
+[submodule "azure/app-service/nopCommerce"]
+	path = azure/app-service/nopCommerce
+	url = https://github.com/nopSolutions/nopCommerce.git
