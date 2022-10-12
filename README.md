@@ -1,19 +1,28 @@
-# application-examples
+# Application Examples
 
-Example applications bundles to run on [massdriver](https://massdriver.cloud).
+Example applications bundles to run on [Massdriver](https://massdriver.cloud).
 
 ## Kubernetes Example Application Bundles
 
-This example application bundles will run on AWS EKS, Azure AKS, and GCP GKE.
+These example application bundles will run on AWS EKS, Azure AKS, and GCP GKE.
 
-- [Express / Mongo Guestbook](./k8s/express-mongo-guestbook/) - Guestbook application running on Express JS and MongoDB
+- [Express / Mongo Guestbook](./k8s/express-mongoose-demo/) - Guestbook application running on Express JS and MongoDB
 - [Elixir / Phoenix Chat Example](./k8s/phoenix-chat-example) - Chat application running on Elixir/Phoenix & Postgres 13 (AWS RDS, Cloud SQL, etc)
-- [Rails / PostgreSQL TODO List](./gcp/cloud-run-postgresql) - Ruby on Rails TODO List application running on Rails 7 & Postgres 12 (GCP Cloud PostgreSQL, Cloud Run, etc)
+
+
+## AWS Example Application Bundles
+
+- [Javascript / Lambda](./aws/lambda-transform) - A serverless application that transforms a JSON payload.
+
+## Azure Example Application Bundles
+
+- [.NET / MySQL eCommerce App](./azure/app-service) - This app, `nopCommerce`, is a free and open-source eCommerce solution
+
+## GCP Example Application Bundles
+
+- [Laravel / PostgreSQL ChatOps](./gcp/cloud-run/laravel) - ChatOps application built with Laravel
 
 ## Source Code for Example Applications
 
-- Express / Mongo Guestbook - [Source Code](https://github.com/massdriver-cloud/express-mongo-guestbook) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/express-mongo-guestbook)
+The source code for each example application is included. The folder is named `app` and is a git submodule unless the app code is minimal.
 
-- Elixir / Phoenix Chat Example - [Source Code](https://github.com/massdriver-cloud/phoenix-chat-example) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/phoenix-chat-example)
-
-- Rails / PostgreSQL TODO List - [Source Code](https://github.com/massdriver-cloud/rails-postgresSQL-todolist) [Docker](https://hub.docker.com/repository/docker/massdrivercloud/rails-postgresql-example)

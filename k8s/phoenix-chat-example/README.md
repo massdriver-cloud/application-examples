@@ -1,6 +1,6 @@
 # phoenix-chat
 
-A Phoenix / Elixir application demo running [dwyl/phoenix-chat-example](https://github.com/massdriver-cloud/phoenix-chat-example)
+A Phoenix / Elixir application demo running [dwyl/phoenix-chat-example](https://github.com/massdriver-cloud/phoenix-chat-example). The public Docker image can be found [here](https://hub.docker.com/repository/docker/massdrivercloud/express-mongo-guestbook).
 
 ## Massdriver `kubernetes-deployment` Template
 
