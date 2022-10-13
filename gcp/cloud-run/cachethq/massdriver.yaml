@@ -13,12 +13,7 @@ app:
     DB_USERNAME: .connections.db.data.authentication.username
     DB_PASSWORD: .connections.db.data.authentication.password
     APP_KEY: '@text "base64:N046mCopI3MoaDzjfJNpzOUZ/mxBBurAu2Emft2Zc+o="'
-    # REDIS_HOST: .connections.cache.data.authentication.hostname
-    # REDIS_DATABASE=null
-    # REDIS_PORT: .connections.cache.data.authentication.port
   policies: []
-    # Use jq expressions to select policies from artifact security blocks
-    # - .connections.sqs.data.security.iam.subscribe
 
 params:
   examples:
@@ -97,7 +92,6 @@ connections:
     - gcp_authentication
     - gcp_subnetwork
     - db
-    # - cache
   properties:
     gcp_authentication:
       $ref: massdriver/gcp-service-account
@@ -105,8 +99,6 @@ connections:
       $ref: massdriver/gcp-subnetwork
     db:
       $ref: massdriver/postgresql-authentication
-    # cache:
-    #   $ref: massdriver/redis-authentication
 
 ui:
   ui:order:
