@@ -1,10 +1,10 @@
 [submodule "k8s/express-mongoose-demo/app"]
 	path = k8s/express-mongoose-demo/app
-	url = git@github.com:container-labs/node-express-mongoose-demo.git
+	url = git@github.com:massdriver-cloud/node-express-mongoose-demo.git
 
 [submodule "azure/app-service/nopCommerce"]
 	path = azure/app-service/app
-	url = https://github.com/nopSolutions/nopCommerce.git
+	url = git@github.com:massdriver-cloud/nopCommerce.git
 [submodule "k8s/phoenix-chat-example/app"]
 	path = k8s/phoenix-chat-example/app
 	url = git@github.com:massdriver-cloud/phoenix-chat-example.git
