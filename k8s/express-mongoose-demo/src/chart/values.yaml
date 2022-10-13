@@ -6,7 +6,7 @@ command: []
 args: []
 
 envs: []
-port:
+port: 3000
 
 serviceAccount:
   annotations: {}
