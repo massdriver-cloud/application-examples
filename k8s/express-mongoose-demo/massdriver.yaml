@@ -8,6 +8,19 @@ type: application
 app:
   envs:
     MONGODB_URL: '@text "mongodb://\(.connections.db.data.authentication.username):\(.connections.db.data.authentication.password)@\(.connections.db.data.authentication.hostname):\(.connections.db.data.authentication.port|tostring)/admin"'
+    # TODO: Remove the need for these out of the forked application. It's lame we need to specify these for it to come up cleanly.
+    TWITTER_CLIENTID: '@text "id"'
+    TWITTER_SECRET: '@text "secret"'
+    GITHUB_CLIENTID: '@text "id"'
+    GITHUB_SECRET: '@text "secret"'
+    LINKEDIN_CLIENTID: '@text "id"'
+    LINKEDIN_SECRET: '@text "secret"'
+    GOOGLE_CLIENTID: '@text "id"'
+    GOOGLE_SECRET: '@text "secret"'
+    IMAGER_S3_KEY: '@text "key"'
+    IMAGER_S3_SECRET: '@text "secret"'
+    IMAGER_S3_BUCKET: '@text "bucket"'
+
   policies: []
 
 params:
