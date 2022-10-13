@@ -37,6 +37,7 @@ params:
           # Just set the full URI here or remove this field and hard code it in your values.yaml file.
           description: Container repository to use for this application.
           type: string
+          default: massdrivercloud/express-mongoose-demo
         tag:
           title: Image Tag
           $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
@@ -57,10 +58,6 @@ params:
           title: Memory
           description: The expected Memory resources required for this application.
           type: integer
-    port:
-      title: Port
-      description: The container port the application will listen on.
-      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/port.json
     replicas:
       title: Replicas
       description: Manage the number of concurrent replicas of your application
