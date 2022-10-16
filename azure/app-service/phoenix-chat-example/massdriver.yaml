@@ -9,9 +9,11 @@ app:
   envs:
     # Use jq expressions to build environment variables from input params or connections
     LOG_LEVEL: .params.log_level
-    DB_USER: .connections.postgresql.data.authentication.username
-    DB_PASS: .connections.postgresql.data.authentication.password
-    DB_HOST: .connections.postgresql.data.authentication.hostname
+    DATABASE_URL: '@text "postgres://" + .connections.postgresql.data.authentication.username + ":" + .connections.postgresql.data.authentication.password + "@" + .connections.postgresql.data.authentication.hostname + "/postgres?sslmode=require"'
+    SECRET_KEY_BASE: '@text "923i09282094802840928042"'
+    PORT: '@text "4000"'
+    HOST: '@text "chef.mdazuresbx.com"'
+    DATABASE_SSL: '@text "true"'
   policies: []
     # Use jq expressions to select policies from artifact security blocks
     # - .connections.sqs.data.security.iam.subscribe
@@ -33,16 +35,26 @@ params:
     - image
     - dns
   properties:
-    application: 
+    application:
       title: Application
       description: Application configuration
       type: object
       required:
+        - cidr
         - location
         - sku_name
         - minimum_worker_count
         - maximum_worker_count
       properties:
+        command:
+          title: Command
+          description: Optional command to run in the container. If no command is specified, the default command for the image run.
+          type: string
+        subnet_cidr:
+          title: CIDR
+          description: A /24 to a /28 to assign IPs to the App Service instances.
+          type: string
+          default: 10.0.140.0/24
         location:
           title: Location
           description: Azure location
@@ -147,10 +159,13 @@ params:
 connections:
   required:
     - azure_service_principal
+    - virtual_network
     - postgresql
   properties:
     azure_service_principal:
       $ref: massdriver/azure-service-principal
+    virtual_network:
+      $ref: massdriver/azure-virtual-network
     postgresql:
       $ref: massdriver/postgresql-authentication
 
@@ -162,6 +177,8 @@ ui:
     - dns
   application:
     ui:order:
+      - command
+      - cidr
       - location
       - sku_name
       - minimum_worker_count
