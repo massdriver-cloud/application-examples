@@ -8,5 +8,5 @@ module "application_app_service" {
   contact_email      = var.md_metadata.target.contact_email
   tags               = var.md_metadata.default_tags
   virtual_network_id = var.virtual_network.data.infrastructure.id
-  subnet_cidr        = var.application.subnet_cidr
+  command            = var.command
 }
