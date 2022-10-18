@@ -16,11 +16,7 @@ app:
   policies: []
 
 params:
-  examples:
-    - __name: "API"
-      endpoint:
-        enabled: true
-        subdomain: api
+  examples: []
   required:
     - container
     - max_instances
