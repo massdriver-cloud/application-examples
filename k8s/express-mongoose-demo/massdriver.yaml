@@ -1,5 +1,5 @@
 schema: draft-07
-name: k8s-express-mongoose-demo
+name: express-mongoose-demo
 description: Express Mongoose Demo on Kubernetes
 source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/express-mongoose-demo
 access: private
