@@ -53,6 +53,13 @@ spec:
               limits:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
+            volumeMounts:
+            - name: config
+              mountPath: /etc/config
+          volumes:
+          - name: config
+            configMap:
+              name: {{ include "application.fullname" . }}
           {{- with .Values.nodeSelector }}
           nodeSelector:
             {{- toYaml . | nindent 12 }}
