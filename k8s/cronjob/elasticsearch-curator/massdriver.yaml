@@ -1,0 +1,200 @@
+schema: draft-07
+name: elasticsearch-curator
+description: A cronjob to curate indexes in an Elasticsearch database
+source_url: github.com/massdriver-cloud/application-examples/k8s/cronjob/elasticsearch-curator
+access: private
+type: application
+
+app:
+  envs:
+    # Use jq expressions to build environment variables from input params or connections
+    LOG_LEVEL: .params.configuration.log_level
+    # MONGO_DSN: .connections.mongo_authentication.data.authentication.username + ":" + .connections.mongo_authentication.data.authentication.password + "@" + .connections.mongo_authentication.data.authentication.hostname + ":" + (.connections.mongo_authentication.data.authentication.port|tostring)
+  policies: []
+    # Use jq expressions to select policies from artifact security blocks
+    # - .connections.sqs.data.security.iam.subscribe
+
+params:
+  required:
+    - namespace
+    - image
+    - resourceRequests
+    - job
+  properties:
+    namespace:
+      title: Kubernetes Namespace
+      description: Application will be deployed into this namespace. If the namespace doesn't exist, it will be created.
+      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/k8s-resource-name.json
+      default: default
+    image:
+      title: Container Image
+      type: object
+      required:
+        - tag
+      properties:
+        tag:
+          title: Image Tag
+          $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
+          default: latest
+    additionalEnvs:
+      title: Environment Variables
+      description: "List of environment variables to set in the application runtime. Note: Environment variables from connections should be programmatically set in the application configuration file. See https://docs.massdriver.cloud/applications/getting-started#environment-variable-examples"
+      type: array
+      default: []
+      items:
+        type: object
+        properties:
+          name:
+            title: Name
+            type: string
+          value:
+            title: Value
+            type: string
+    resourceRequests:
+      type: object
+      title: Resources
+      required:
+        - cpu
+        - memory
+      properties:
+        cpu:
+          title: CPU Cores
+          description: The expected CPU cores required for this application. Fractional numbers are allowed (0.5 is one half of a CPU core).
+          type: number
+          minimum: 0.001
+        memory:
+          title: Memory
+          description: The expected Memory resources required for this application.
+          type: integer
+    job:
+      type: object
+      title: Job Settings
+      required:
+        - schedule
+        - concurrencyPolicy
+        - completions
+        - parallelism
+      properties:
+        schedule:
+          title: Schedule
+          description: The schedule in Cron format, see https://en.wikipedia.org/wiki/Cron.
+          type: string
+          default: "* * * * *"
+          pattern: ^(@(annually|yearly|monthly|weekly|daily|hourly))|((((\d+,)+\d+|((\d+|\*)(\/|-)\d+)|\d+|\*) ){4}((\d+,)+\d+|((\d+|\*)(\/|-)\d+)|\d+|\*))$
+          message:
+            pattern: "Value must be in the standard cron format: See https://en.wikipedia.org/wiki/Cron"
+        concurrencyPolicy:
+          title: Concurrency Policy
+          description: "Specifies how to treat concurrent executions of a Job. This occurs when the previous job hasn't completed before the next job is scheduled. Valid values are: - 'Allow': allows CronJobs to run concurrently; - 'Forbid': forbids concurrent runs, skipping next run if previous run hasn't finished yet; - 'Replace': cancels currently running job and replaces it with a new one"
+          type: string
+          default: Allow
+          enum:
+            - Allow
+            - Forbid
+            - Replace
+        completions:
+          title: Completions
+          description: Specifies the number of successfully finished pods the job requires in order to be considered complete.
+          type: integer
+          default: 1
+          minimum: 1
+        parallelism:
+          title: Parallelism
+          description: Specifies the maximum number of pods the job should run in parallel at any given time. Must be less than or equal to Completions.
+          type: integer
+          default: 1
+          minimum: 1
+    configuration:
+      title: Configuration
+      description: Application specific configuration settings
+      type: object
+      required:
+        - age
+        - log_level
+      properties:
+        age:
+          title: Index Age
+          description: Indexes older than the specified age will be deleted
+          type: object
+          required:
+            - unit
+            - unit_count
+          properties:
+            unit:
+              title: Age Unit
+              type: string
+              default: days
+              enum:
+                - seconds
+                - minutes
+                - hours
+                - days
+                - weeks
+                - months
+                - years
+            unit_count:
+              title: Age Unit
+              type: integer
+              minValue: 1
+              default: 7
+        log_level:
+          title: Log Level
+          type: string
+          default: INFO
+          enum:
+            - CRITICAL
+            - ERROR
+            - WARNING
+            - INFO
+            - DEBUG
+
+
+
+connections:
+  required:
+    - kubernetes_cluster
+    - elasticsearch
+  properties:
+    kubernetes_cluster:
+      $ref: massdriver/kubernetes-cluster
+    aws_authentication:
+      $ref: massdriver/aws-iam-role
+    gcp_authentication:
+      $ref: massdriver/gcp-service-account
+    azure_authentication:
+      $ref: massdriver/azure-service-principal
+    elasticsearch:
+      $ref: massdriver/elasticsearch-authentication
+
+ui:
+  ## If you need to allow an end user to select the container repository at deploy time, our smart widget can be used.
+  ## Additional documentation here: https://docs.massdriver.cloud/bundles/custom-widgets-and-fields
+  # image:
+  #   repository:
+  #     ui:field: "containerRepositoriesDropdown"
+  #     cloud: "aws"
+  ui:order:
+    - namespace
+    - image
+    - command
+    - args
+    - additionalEnvs
+    - resourceRequests
+    - job
+    - "*"
+  job:
+    ui:order:
+      - schedule
+      - concurrencyPolicy
+      - completions
+      - parallelism
+      - "*"
+  resourceRequests:
+    memory:
+      ui:field: conversionFieldData
+      unit: Bytes
+  additionalEnvs:
+    items:
+      ui:order:
+        - name
+        - value

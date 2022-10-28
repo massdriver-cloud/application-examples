@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "application.fullname" . }}
+  labels:
+    {{- include "application.labels" . | nindent 4 }}
+data:
+  action_file.yml: {{ tpl (.Files.Get "files/action_file.yml.tpl") . | quote }}
+  config.yml: {{ tpl (.Files.Get "files/config.yml.tpl") . | quote }}

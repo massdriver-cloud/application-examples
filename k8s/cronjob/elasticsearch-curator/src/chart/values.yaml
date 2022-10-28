@@ -1,0 +1,23 @@
+image:
+  repository: bitnami/elasticsearch-curator
+  tag: 
+
+command: ["curator"]
+args: ["--config", "/etc/config/config.yml", "/etc/config/action_file.yml"]
+
+envs: []
+
+serviceAccount:
+  annotations: {}
+  name:
+
+resourceRequests: {}
+resourceLimits: {}
+
+job:
+  schedule:
+  concurrencyPolicy:
+  completions:
+  parallelism:
+
+commonLabels: {}
