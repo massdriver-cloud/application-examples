@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  handler:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    envs:
+      - TASK_QUEUE=foobar
+    ports:
+      - 4000:4000
