@@ -1,16 +1,18 @@
 schema: draft-07
 name: gcp-cloud-run-task-creator
 description:
-source_url: github.com/YOUR_ORG/gcp-cloud-run-task-creator
+ref: github.com/YOUR_ORG/gcp-cloud-run-task-creator
 access: private
 type: application
 
 app:
   envs:
-    TASK_QUEUE: .connections.gcp_cloud_tasks_queue.data.infrastructure.grn
-    HANDLER_URL: http://localhost:4000/one/two/three
-  policies: []
-    # - .connections.gcp_cloud_tasks_queue.data.security.....
+    TASK_QUEUE: .connections.task_queue.data.infrastructure.grn
+    # TASK_HANDLER_URL: .conntections.task_handler.data.infrastructure.url
+    TASK_HANDLER_URL: '@text "https://local-dev-handler-000-4cgtpmslpa-uc.a.run.app/log_payload"'
+    SERVICE_ACCOUNT_EMAIL: '@text "md-service-account@md-demos.iam.gserviceaccount.com"'
+  policies:
+    - .connections.task_queue.data.security.iam.enqueuer
 
 params:
   examples:
@@ -75,14 +77,17 @@ connections:
   required:
     - gcp_authentication
     - gcp_subnetwork
-    - gcp_cloud_tasks_queue
+    - task_queue
+    # - task_handler
   properties:
     gcp_authentication:
       $ref: massdriver/gcp-service-account
     gcp_subnetwork:
       $ref: massdriver/gcp-subnetwork
-    gcp_cloud_tasks_queue:
+    task_queue:
       $ref: massdriver/gcp-cloud-tasks-queue
+    # task_handler:
+    #   $ref: massdriver/gcp-cloud-tasks-http-handler
 
 ui:
   ui:order:
