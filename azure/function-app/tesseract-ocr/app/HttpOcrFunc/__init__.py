@@ -2,7 +2,6 @@ import pytesseract
 import logging
 from PIL import Image
 from io import BytesIO
-# from django.http import HttpResponse, HttpRequest
 import azure.functions as func
 import requests
 
