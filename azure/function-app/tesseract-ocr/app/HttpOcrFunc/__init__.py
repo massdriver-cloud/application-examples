@@ -1,34 +1,25 @@
-import logging
 import pytesseract
+import logging
 from PIL import Image
+from io import BytesIO
+# from django.http import HttpResponse, HttpRequest
 import azure.functions as func
-import os
-# import requests
+import requests
 
+# this function can be triggered using 'curl <function-url>?image_url=<image-url>'
 def main(req: func.HttpRequest) -> func.HttpResponse:
 
     logging.info('Python HTTP trigger function processed a request.')
 
-    # # test code for OCR
-    try:
-        file = req.files.get('file')
-        file.save('/tmp/1.jpg')
-    except ValueError:
-        pass
+    # get the image URL from the request
+    image_url = req.params.get('image_url')
+    
+    # download the image from the URL
+    response = requests.get(image_url)
+    img_bytes = BytesIO(response.content)
+    
+    # use Pytesseract to extract the text from the image
+    text = pytesseract.image_to_string(Image.open(img_bytes))
 
-    text = ''
-    if file:
-        text = str(pytesseract.image_to_string(Image.open('/tmp/1.jpg')))
-
+    # return the text as an HTTP response
     return func.HttpResponse('text Extracted from Image: {}'.format(text))
-
-# def download_image(url, file_name):
-#     # Send GET request
-#     response = requests.get(url)
-
-#     # Save the image
-#     if response.status_code == 200:
-#         with open(file_name, "wb") as f:
-#             f.write(response.content)
-#     else:
-#         print(response.status_code)
