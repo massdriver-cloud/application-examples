@@ -8,10 +8,8 @@ type: application
 app:
   envs:
     LOG_LEVEL: .params.log_level
-    # MONGO_DSN: .connections.mongo_authentication.data.authentication.username + ":" + .connections.mongo_authentication.data.authentication.password + "@" + .connections.mongo_authentication.data.authentication.hostname + ":" + (.connections.mongo_authentication.data.authentication.port|tostring)
-  policies: []
-    # Use jq expressions to select policies from artifact security blocks
-    # - .connections.sqs.data.security.iam.subscribe
+  policies:
+    - .connections.task_queue.data.security.iam.taskrunner
 
 params:
   examples:
@@ -76,13 +74,13 @@ connections:
   required:
     - gcp_authentication
     - gcp_subnetwork
-    - tasks_queue
+    - task_queue
   properties:
     gcp_authentication:
       $ref: massdriver/gcp-service-account
     gcp_subnetwork:
       $ref: massdriver/gcp-subnetwork
-    tasks_queue:
+    task_queue:
       $ref: massdriver/gcp-cloud-tasks-queue
 
 ui:

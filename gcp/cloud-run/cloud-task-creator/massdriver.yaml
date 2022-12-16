@@ -10,7 +10,7 @@ app:
     TASK_QUEUE: .connections.task_queue.data.infrastructure.grn
     # TASK_HANDLER_URL: .conntections.task_handler.data.infrastructure.url
     TASK_HANDLER_URL: '@text "https://local-dev-handler-000-4cgtpmslpa-uc.a.run.app/log_payload"'
-    SERVICE_ACCOUNT_EMAIL: '@text "md-service-account@md-demos.iam.gserviceaccount.com"'
+    SERVICE_ACCOUNT_EMAIL: '@text "local-dev-creator-000@md-demos.iam.gserviceaccount.com"'
   policies:
     - .connections.task_queue.data.security.iam.enqueuer
 
