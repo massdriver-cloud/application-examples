@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  creator:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - TASK_QUEUE=local-dev-task-000
+      - TASK_HANDLER_URL=https://local-dev-handler-000-4cgtpmslpa-uc.a.run.app/log_payload
+      - SERVICE_ACCOUNT_EMAIL=foobar
+      - GOOGLE_APPLICATION_CREDENTIALS=creds.json
+    volumes:
+      - ./gcp-service-account.json:/creds.json
+    ports:
+      - 4000:4000
