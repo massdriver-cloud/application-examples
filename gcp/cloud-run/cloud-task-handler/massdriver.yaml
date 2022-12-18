@@ -1,6 +1,6 @@
 schema: draft-07
 name: gcp-cloud-run-task-handler
-description:
+description: Cloud Taks Handler
 source_url: github.com/YOUR_ORG/gcp-cloud-run-task-handler
 access: private
 type: application

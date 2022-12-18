@@ -1,7 +1,7 @@
 schema: draft-07
 name: gcp-cloud-run-task-creator
-description:
-ref: github.com/YOUR_ORG/gcp-cloud-run-task-creator
+description: GCP Cloud Task Creator
+source_url: github.com/YOUR_ORG/gcp-cloud-run-task-creator
 access: private
 type: application
 
