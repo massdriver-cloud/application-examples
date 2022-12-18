@@ -1,17 +1,36 @@
-const subscription = pubsubClient.subscription(subscriptionName);
+// sample-metadata:
+//   title: Listen For Messages
+//   description: Listens for messages from a subscription.
+//   usage: node listenForMessages.js <subscription-name-or-id> [timeout-in-seconds]
 
-let messageCount = 0;
+function main(
+  timeout = 600
+) {
+  timeout = Number(timeout);
+  const {PubSub} = require('@google-cloud/pubsub');
+  const pubSubClient = new PubSub();
 
-const messageHandler = message => {
-  console.log(`message received ${message.id}`);
-  console.log(`Data: ${message.data}`);
-  messageCount += 1;
+  function listenForMessages() {
+    const subscription = pubSubClient.subscription(process.env.SUBSCRIPTION_ID);
+    let messageCount = 0;
+    const messageHandler = message => {
+      console.log(`Received message ${message.id}:`);
+      console.log(`\tData: ${message.data}`);
+      console.log(`\tAttributes: ${message.attributes}`);
+      messageCount += 1;
+      message.ack();
+    };
 
-  message.ack();
-};
+    // Listen for new messages until timeout is hit
+    subscription.on('message', messageHandler);
 
-subscription.on(`message`, messageHandler);
-setTimeout(() => {
-  subscription.removeListener('message', messageHandler);
-  console.log(`${messageCount} message(s) received`);
-}, timeout * 1000);
+    setTimeout(() => {
+      subscription.removeListener('message', messageHandler);
+      console.log(`${messageCount} message(s) received.`);
+    }, timeout * 1000);
+  }
+
+  listenForMessages();
+}
+
+main(...process.argv.slice(2));

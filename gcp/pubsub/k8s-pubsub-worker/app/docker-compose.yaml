@@ -5,4 +5,9 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    environment:
+      - SUBSCRIPTION_ID=projects/GCP_PROJECT/subscriptions/GCP_SUBSCRIPTION
+      - GOOGLE_APPLICATION_CREDENTIALS=creds.json
+    volumes:
+      - ./creds.json:/creds.json
 
