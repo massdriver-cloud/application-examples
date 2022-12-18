@@ -3,9 +3,9 @@
 # auto-generated schema files
 schema-*.json
 # don't check in the lock, the provisioner has its own versions
--.terraform.lock.hcl
+.terraform.lock.hcl
 # Auto generated terraform variable files
--*_variables.tf.json
+*_variables.tf.json
 # For setting variable input values during local development
 **/*.tfvars.json
 **/*.tfvars
