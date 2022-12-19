@@ -1,6 +1,6 @@
 image:
-  repository:
-  tag:
+  repository: us-west2-docker.pkg.dev/mdc-trellis-staging-trellis/trellis/k8s-pubsub-worker
+  tag: 1
 
 command: []
 args: []
