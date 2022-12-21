@@ -1,7 +1,7 @@
 schema: draft-07
-name: cloud-run-express-api
-description: ExpressJS API running on GCP Cloud Run
-source_url: github.com/YOUR_ORG/cloud-run-express-api
+name: cloud-run-eventarc-pubsub
+description: CloudRun EventArc handler for PubSub messages
+source_url: github.com/YOUR_ORG/cloud-run-eventarc-pubsub
 access: private
 type: application
 
