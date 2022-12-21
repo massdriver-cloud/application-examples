@@ -1,3 +1,7 @@
+[submodule "gcp/gke/model-server/app"]
+	path = gcp/gke/model-server/app
+	url = git@github.com:massdriver-cloud/k8s-model-server.git
+
 [submodule "k8s/express-mongoose-demo/app"]
 	path = k8s/express-mongoose-demo/app
 	url = git@github.com:massdriver-cloud/node-express-mongoose-demo.git
