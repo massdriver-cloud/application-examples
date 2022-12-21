@@ -1,19 +1,20 @@
 image:
-  repository:
-  tag:
+  repository: massdrivercloud/k8s-model-server
+  tag: latest
 
 command: []
 args: []
 
 envs: []
-port:
+port: 5000
 
 serviceAccount:
   annotations: {}
   name:
 
 resourceRequests: {}
-resourceLimits: {}
+resourceLimits:
+  nvidia.com/gpu: 1
 
 replicas:
   autoscalingEnabled: false
