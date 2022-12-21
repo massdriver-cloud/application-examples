@@ -4,23 +4,14 @@ import threading
 
 from diffusers import StableDiffusionPipeline
 from flask import Flask, request, send_file, jsonify
-from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5000", "https://stable.gcp-gcp-gcp.com"])
-app.config['CORS_HEADERS'] = 'Content-Type'
 sem = threading.Semaphore()
 
-@app.route("/health")
-@cross_origin()
-def health_check():
-    return jsonify({ "healthy":true })
-
 @app.route("/", methods=['POST', 'PUT'])
-@cross_origin(methods=['POST', 'PUT'])
 def infer():
     body = request.json
-    phrase = body.get("phrase", "a unicorn riding a bicycle")
+    phrase = body.get("phrase", "flamingos")
     model  = body.get("model", "runwayml/stable-diffusion-v1-5")
     steps = int(body.get("steps", 50))
     if steps > 500:
@@ -33,16 +24,11 @@ def infer():
       use_auth_token=os.getenv('HUGGINGFACE_TOKEN')
     ).to("cuda")
     result = pipe(phrase, num_inference_steps=steps)
-    sem.release()
     image = result.images[0]
-    unique_id = str(uuid.uuid4())
-    img_path = f"/root/.cache/test-{unique_id}.png"
-    url_path = f"https://storage.googleapis.com/md-ml-public/test-{unique_id}.png"
-    image.save(img_path)
-    data = {
-        "img": url_path
-    }
-    return jsonify(data)
+    image_path = f"/tmp/stable-{uuid.uuid4()}.png"
+    image.save(image_path)
+    sem.release()
+    return send_file(image_path, mimetype='image/png')
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
