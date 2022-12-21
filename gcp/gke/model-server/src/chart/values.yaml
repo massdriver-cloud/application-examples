@@ -1,6 +1,6 @@
 image:
-  repository: us-central1-docker.pkg.dev/md-wbeebe-0808-example-apps/mass-learn/model-server
-  tag: 0
+  repository: massdrivercloud/k8s-model-server
+  tag: latest
 
 command: []
 args: []
