@@ -7,9 +7,9 @@ type: application
 
 app:
   envs:
-    SUBSCRIPTION_ID: .connections.subscription.data.infastructure.grn
+    SUBSCRIPTION_ID: .connections.subscription.data.infrastructure.grn
   policies:
-    - .connections.subscription.data.security.iam.subscribe
+    - .connections.subscription.data.security.iam.subscriber
 
 params:
   required:
