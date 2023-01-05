@@ -5,7 +5,7 @@
       "name": "mytimer",
       "type": "timerTrigger",
       "direction": "in",
-      "schedule": "0 1 * * * *"
+      "schedule": "0 */5 * * * *"
     },
     {
       "direction": "out",
@@ -15,7 +15,7 @@
       "collectionName": "feedcol",
       "leaseCollectionName": "leases",
       "createLeaseCollectionIfNotExists": true,
-      "connectionStringSetting": "MyCosmosDBConnectionString",
+      "connectionStringSetting": "cosmosdb-connection-string",
       "createIfNotExists": true
     }
   ]
