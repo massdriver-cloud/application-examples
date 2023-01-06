@@ -1,0 +1,35 @@
+image:
+  repository:
+  tag: latest
+
+command: []
+args: []
+
+envs: []
+port: 5000
+
+serviceAccount:
+  annotations: {}
+  name:
+
+resourceRequests: {}
+resourceLimits: {}
+
+replicas:
+  autoscalingEnabled: false
+  replicaCount:
+  minReplicas:
+  maxReplicas:
+  targetCPUUtilizationPercentage:
+
+ingress:
+  annotations: {}
+  enabled: true
+  className:
+  host:
+  path:
+
+commonLabels: {}
+
+pod:
+  annotations: {}
