@@ -1,12 +1,12 @@
 module "application_app_service" {
-  source             = "github.com/massdriver-cloud/terraform-modules//massdriver-application-azure-function-app?ref=718f586"
-  md_metadata        = var.md_metadata
-  application        = var.application
-  docker             = merge(var.docker, {
+  source      = "github.com/massdriver-cloud/terraform-modules//massdriver-application-azure-function-app?ref=718f586"
+  md_metadata = var.md_metadata
+  application = var.application
+  docker = merge(var.docker, {
     registry = "registry.hub.docker.com"
-    image = "karthequian/helloworld"
+    image    = "karthequian/helloworld"
   })
-  network            = {
+  network = {
     auto = true
   }
   monitoring = {
