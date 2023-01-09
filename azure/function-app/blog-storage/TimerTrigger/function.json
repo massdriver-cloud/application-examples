@@ -15,7 +15,7 @@
       "collectionName": "feedcol",
       "leaseCollectionName": "leases",
       "createLeaseCollectionIfNotExists": true,
-      "connectionStringSetting": "cosmosdb-connection-string",
+      "connectionStringSetting": "",
       "createIfNotExists": true
     }
   ]

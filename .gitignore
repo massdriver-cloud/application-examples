@@ -137,4 +137,4 @@ schema-ui.json
 # Plugins
 .infracost
 .vscode/
-
+__*
