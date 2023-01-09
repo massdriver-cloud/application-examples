@@ -1,23 +1,19 @@
 schema: draft-07
 name: k8s-model-server
 description: An example machine-learning model server running on GKE with GPUs.
-source_url: github.com/YOUR_ORG/k8s-model-server
+source_url: github.com/massdriver-cloud/application-examples/k8s-model-server
 access: private
 type: application
 
 app:
   envs:
-    # Use jq expressions to build environment variables from input params or connections
     HUGGINGFACE_TOKEN: .params.huggingface_token
   policies: []
-    # Use jq expressions to select policies from artifact security blocks
-    # - .connections.sqs.data.security.iam.subscribe
 
 params:
   required:
     - image
     - replicas
-    - ingress
   properties:
     image:
       title: Container Image
@@ -114,6 +110,16 @@ params:
             required:
             - host
             - path
+        replicaCount:
+          title: Number of Replicas
+          description: Fixed number of replicas to constantly maintain
+          type: integer
+          minimum: 0
+          default: 1
+    huggingface_token:
+      title: HuggingFace Token
+      description: A token for accessing HuggingFace's model repository
+      type: string
 
 connections:
   required:
@@ -132,19 +138,9 @@ ui:
   ui:order:
     - image
     - replicas
-    - ingress
+    - huggingface_token
     - "*"
   replicas:
     ui:order:
-      - autoscalingEnabled
       - replicaCount
-      - minReplicas
-      - maxReplicas
-      - targetCPUUtilizationPercentage
-      - "*"
-  ingress:
-    ui:order:
-      - enabled
-      - host
-      - path
       - "*"
