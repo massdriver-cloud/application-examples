@@ -1,18 +1,18 @@
 schema: draft-07
-name: openai-chat-bot
-description: Simple 'Hello world' application running on Azure functions.
-source_url: github.com/YOUR_ORG/hello-world
+name: bloby
+description: Hi I'm bloby, I use Azure blob storage to show you amazing things!
+source_url: github.com/YOUR_ORG/bloby
 access: private
 type: application
 
 app:
   envs:
-    # Use jq expressions to build environment variables from input params or connections
-    LOG_LEVEL: .params.log_level
-    # MONGO_DSN: .connections.mongo_authentication.data.authentication.username + ":" + .connections.mongo_authentication.data.authentication.password + "@" + .connections.mongo_authentication.data.authentication.hostname + ":" + (.connections.mongo_authentication.data.authentication.port|tostring)
-  policies: []
-    # Use jq expressions to select policies from artifact security blocks
-    # - .connections.sqs.data.security.iam.subscribe
+    AZURE_STORAGE_ACCOUNT_NAME: .connections.storage.data.infrastructure.ari | split("/+";"")[8]
+    # AZURE_TENANT_ID: '@text "565f19fb-40ea-44d1-8ae8-9912a017ef09"'
+    # AZURE_CLIENT_ID: '@text "4652e597-d072-46af-b993-c31af2f49c78"'
+    # AZURE_CLIENT_SECRET: "@text "bdA8Q~1-wVDA8SkRgjmHelR7l8-r9KhrLRFhQar4"'
+  policies:
+    - .connections.storage.data.security.iam."read/write"
 
 params:
   examples:
@@ -195,4 +195,3 @@ ui:
     zone_id:
       ui:field: dnsZonesDropdown
       cloud: azure
-

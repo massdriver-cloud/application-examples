@@ -1,22 +1,15 @@
 schema: draft-07
-name: azure-app-nopcommerce
-description: nopCommerce is an open source eCommerce software that contains both a catalog frontend and an administration tool backend.
-source_url: github.com/massdriver-cloud/application-templates/azure/azure-app-nopcommerce
+name: bloby
+description: Hi I'm bloby, I use Azure blob storage to show you amazing things!
+source_url: github.com/YOUR_ORG/bloby
 access: private
 type: application
 
 app:
   envs:
-    # Use jq expressions to build environment variables from input params or connections
-    LOG_LEVEL: .params.log_level
-    DATABASE_URL: '@text "postgres://" + .connections.postgresql.data.authentication.username + ":" + .connections.postgresql.data.authentication.password + "@" + .connections.postgresql.data.authentication.hostname + "/postgres?sslmode=require"'
-    SECRET_KEY_BASE: '@text "923i09282094802840928042"'
-    PORT: '@text "4000"'
-    HOST: '@text "chef.mdazuresbx.com"'
-    DATABASE_SSL: '@text "true"'
-  policies: []
-    # Use jq expressions to select policies from artifact security blocks
-    # - .connections.sqs.data.security.iam.subscribe
+    AZURE_STORAGE_ACCOUNT_NAME: .connections.storage.data.infrastructure.ari | split("/+";"")[8]
+  policies:
+    - .connections.storage.data.security.iam."read/write"
 
 params:
   examples:
@@ -40,42 +33,10 @@ params:
       description: Application configuration
       type: object
       required:
-        - cidr
-        - location
         - sku_name
         - minimum_worker_count
         - maximum_worker_count
       properties:
-        cidr:
-          title: Subnet CIDR
-          type: string
-          description: Specify a /24 CIDR range within your vnet to create subnet for the App Service. The subnet CIDR cannot be changed after creation.
-          $md.immutable: true
-          pattern: ^(?:10\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])|172\.(?:1[6-9]|2[0-9]|3[0-1])|192\.168)(?:\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){2}\/24$
-          message:
-            pattern: "Must be a /24 range from within the VNet CIDR"
-        location:
-          title: Location
-          description: Azure location
-          type: string
-          $md.immutable: true
-          oneOf:
-            - title: West US
-              const: westus
-            - title: West US 2
-              const: westus2
-            - title: West US 3
-              const: westus3
-            - title: East US
-              const: eastus
-            - title: East US 2
-              const: eastus2
-            - title: North Central US
-              const: northcentralus
-            - title: South Central US
-              const: southcentralus
-            - title: Central US
-              const: centralus
         sku_name:
           title: Size
           description: Azure App Service Plan size
@@ -91,39 +52,33 @@ params:
               const: P3v3
         minimum_worker_count:
           title: Minimum instances
-          description: Minimum number of instances for autoscale.
+          description: Minimum number of instances for autoscale. (Enabling zone balancing multiplies this value by 3)
           type: integer
           minimum: 1
           maximum: 30
         maximum_worker_count:
           title: Maximum instances
-          description: Maximum number of instances for autoscale.
+          description: Maximum number of instances for autoscale.(Enabling zone balancing multiplies this value by 3)
           type: integer
           minimum: 1
           maximum: 30
-    command:
-      title: Command
-      description: Optional command to run in the container. If no command is specified, the default command for the image run.
-      type: string
+        zone_balancing:
+          title: Zone balancing
+          description: Enable zone balancing for the App Service Plan. Cannot be changed after deployment. Only supported in East US.
+          $md.immutable: true
+          type: boolean
+          default: false
     image:
       title: Container Image
       type: object
       required:
-      - repository
       - tag
       properties:
-        repository:
-          $md.immutable: true
-          title: Repository
-          # Massdriver automatically configures your app service to have access to your cloud container repositories.
-          # Just set the full URI here or remove this field and hard code it in your values.yaml file.
-          description: Container repository to use for this application.
-          type: string
         tag:
           title: Image Tag
           $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
           default: latest
-    dns:
+    endpoint:
       title: DNS
       description: DNS configuration
       type: object
@@ -162,39 +117,44 @@ params:
 connections:
   required:
     - azure_service_principal
-    - virtual_network
-    - postgresql
+    - azure_virtual_network
+    - storage
   properties:
     azure_service_principal:
       $ref: massdriver/azure-service-principal
-    virtual_network:
+    azure_virtual_network:
       $ref: massdriver/azure-virtual-network
-    postgresql:
-      $ref: massdriver/postgresql-authentication
-
+    storage:
+      $ref: massdriver/azure-storage-account
 
 ui:
   ui:order:
     - application
     - image
     - dns
+    - "*"
   application:
     ui:order:
-      - command
       - cidr
-      - location
       - sku_name
       - minimum_worker_count
       - maximum_worker_count
+      - zone_balancing
+      - "*"
   image:
     ui:order:
       - repository
       - tag
+      - "*"
+
   dns:
     ui:order:
       - enable_dns
       - zone_id
       - subdomain
+      - "*"
     zone_id:
+      # There are _a ton_ of other fields Massdriver also supports.
+      # https://docs.massdriver.cloud/bundles/custom-widgets-and-fields#dns-zones
       ui:field: dnsZonesDropdown
       cloud: azure
