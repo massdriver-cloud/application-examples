@@ -8,9 +8,6 @@ type: application
 app:
   envs:
     AZURE_STORAGE_ACCOUNT_NAME: .connections.storage.data.infrastructure.ari | split("/+";"")[8]
-    # AZURE_TENANT_ID: '@text "565f19fb-40ea-44d1-8ae8-9912a017ef09"'
-    # AZURE_CLIENT_ID: '@text "4652e597-d072-46af-b993-c31af2f49c78"'
-    # AZURE_CLIENT_SECRET: "@text "bdA8Q~1-wVDA8SkRgjmHelR7l8-r9KhrLRFhQar4"'
   policies:
     - .connections.storage.data.security.iam."read/write"
 
