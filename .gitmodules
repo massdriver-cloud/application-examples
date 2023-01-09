@@ -8,3 +8,12 @@
 [submodule "gcp/gke/model-server/app"]
 	path = gcp/gke/model-server/app
 	url = git@github.com:massdriver-cloud/k8s-model-server.git
+[submodule "azure/app-service/bloby/app"]
+	path = azure/app-service/bloby/app
+	url = https://github.com/container-labs/bloby.git
+[submodule "azure/function-app/bloby/app"]
+	path = azure/function-app/bloby/app
+	url = https://github.com/container-labs/bloby.git
+[submodule "k8s/azure/bloby/app"]
+	path = k8s/azure/bloby/app
+	url = https://github.com/container-labs/bloby.git
