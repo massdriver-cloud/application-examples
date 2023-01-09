@@ -8,6 +8,10 @@ terraform {
       source = "massdriver-cloud/massdriver"
     }
 
+    utility = {
+      source = "massdriver-cloud/utility"
+    }
+
     azurerm = {
       source = "hashicorp/azurerm"
     }
@@ -24,11 +28,7 @@ provider "mdxc" {
 }
 
 provider "azurerm" {
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-  }
+  features {}
 
   client_id       = var.azure_service_principal.data.client_id
   tenant_id       = var.azure_service_principal.data.tenant_id

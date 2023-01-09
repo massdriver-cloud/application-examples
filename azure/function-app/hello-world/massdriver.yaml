@@ -195,4 +195,3 @@ ui:
     zone_id:
       ui:field: dnsZonesDropdown
       cloud: azure
-
