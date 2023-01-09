@@ -11,11 +11,6 @@ CORS(app, origins=["http://localhost:5000", "https://stable.gcp-gcp-gcp.com"])
 app.config['CORS_HEADERS'] = 'Content-Type'
 sem = threading.Semaphore()
 
-@app.route("/health")
-@cross_origin()
-def health_check():
-    return jsonify({ "healthy":true })
-
 @app.route("/", methods=['POST', 'PUT'])
 @cross_origin(methods=['POST', 'PUT'])
 def infer():
@@ -36,11 +31,12 @@ def infer():
     sem.release()
     image = result.images[0]
     unique_id = str(uuid.uuid4())
-    img_path = f"/root/.cache/test-{unique_id}.png"
-    url_path = f"https://storage.googleapis.com/md-ml-public/test-{unique_id}.png"
-    image.save(img_path)
+    # cheap way to write images to GCS, publically available
+    # img_path = f"/root/.cache/test-{unique_id}.png"
+    # url_path = f"https://storage.googleapis.com/md-ml-public/test-{unique_id}.png"
+    # image.save(img_path)
     data = {
-        "img": url_path
+        "img": "httpee_the_url"
     }
     return jsonify(data)
 

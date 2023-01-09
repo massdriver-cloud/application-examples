@@ -15,7 +15,6 @@ app:
 
 params:
   required:
-    - namespace
     - image
     - replicas
     - ingress
@@ -115,16 +114,6 @@ params:
             required:
             - host
             - path
-    # Uncomment the section below to begin adding any application-specific configuration that is appropriate. See the app.envs section above for how to set environment values from these settings.
-    # configuration:
-    #   title: Configuration
-    #   description: Application specific configuration settings
-    #   type: object
-    #   properties:
-    #     log_level:
-    #       title: Log Level
-    #       type: string
-
 
 connections:
   required:
