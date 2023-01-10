@@ -1,7 +1,7 @@
 schema: draft-07
 name: phoenix-chat
 description: A Phoenix / Elixir application demo running dwyl/phoenix-chat-example
-source_url: github.com/massdriver-cloud/application-examples/tree/main/phoenix-chat
+source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/phoenix-chat-example
 access: private
 type: application
 
@@ -10,12 +10,16 @@ app:
   envs:
     LOG_LEVEL: .params.log_level
     DATABASE_URL: '@text "postgres://" + .connections.postgres.data.authentication.username + ":" + .connections.postgres.data.authentication.password + "@" + .connections.postgres.data.authentication.hostname + ":" + (.connections.postgres.data.authentication.port|tostring) + "/chat?sslmode=disable"'
-    SECRET_KEY_BASE: '@text "923i09282094802840928042"'
     PORT: .params.port | tostring
     HOST: .params.ingress.host
   # Use jq expressions to select policies from artifact security blocks
   # - .connections.sqs.data.security.iam.subscribe
   policies: []
+  secrets:
+    SECRET_KEY_BASE:
+      required: true
+      title: "Secret Key Base"
+      description: Learn more [here](https://hexdocs.pm/phoenix/deployment.html#handling-of-your-application-secrets).
 
 params:
   properties:
