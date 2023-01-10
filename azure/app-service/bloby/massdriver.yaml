@@ -1,5 +1,5 @@
 schema: draft-07
-name: bloby
+name: app-service-bloby
 description: Hi I'm bloby, I use Azure blob storage to show you amazing things!
 source_url: github.com/YOUR_ORG/bloby
 access: private
@@ -77,7 +77,7 @@ params:
         tag:
           title: Image Tag
           $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
-          default: latest
+          default: connection-string
     endpoint:
       title: DNS
       description: DNS configuration
