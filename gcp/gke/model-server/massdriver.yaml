@@ -6,8 +6,12 @@ access: private
 type: application
 
 app:
-  envs:
-    HUGGINGFACE_TOKEN: .params.huggingface_token
+  envs: {}
+  secrets:
+     HUGGINGFACE_TOKEN:
+       required: false
+       title: "Huggingface Token"
+       description: A token is only needed to run stable diffusion on private models.  
   policies: []
 
 params:
