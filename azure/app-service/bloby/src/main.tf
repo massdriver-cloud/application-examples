@@ -1,10 +1,9 @@
 module "application_app_service" {
-  # source             = "github.com/massdriver-cloud/terraform-modules//massdriver-application-azure-app-service?ref=9aab9df"
-  source      = "../../../../../terraform-modules/massdriver-application-azure-app-service"
+  source             = "github.com/massdriver-cloud/terraform-modules//massdriver-application-azure-app-service?ref=59cc37c"
   md_metadata = var.md_metadata
   application = var.application
   image = merge(var.image, {
-    repository = "massdrivercentralus.azurecr.io/storage/hello-world"
+    repository = "massdrivercentralus.azurecr.io/storage/bloby"
   })
   dns = var.endpoint
   network = {
