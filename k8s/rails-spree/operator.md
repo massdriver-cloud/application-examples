@@ -1,6 +1,6 @@
 # Ruby on Rails 7 Demo on Kubernetes
 
-This runs a demo of the Spree Starter.
+This runs a demo of the e-commerce platform [Spree](https://github.com/massdriver-cloud/spree_starter)
 
 The admin email and password can be set via secrets added on this bundle:
 
@@ -15,6 +15,8 @@ You can find your package name by following the docs [here](https://docs.massdri
 export MD_PACKAGE_NAME=YOUR_NAME
 kubectl exec $(kubectl get pod -l md-package=${MD_PACKAGE_NAME} -o jsonpath="{.items[0].metadata.name}") -it -- /bin/bash
 ```
+
+Run the following commands to create admin user and sample data.
 
 ```shell
 bundle exec rake db:seed
