@@ -15,3 +15,5 @@ bundle exec rake spree_sample:load
 ```
 
 To log into the admin page, visit: `https://YOUR_SITE.com/admin`
+
+The [legacy frontend](https://github.com/spree/spree_legacy_frontend) is not configured.
