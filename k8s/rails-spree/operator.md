@@ -26,3 +26,10 @@ bundle exec rake spree_sample:load
 To log into the admin page, visit: `https://YOUR_SITE.com/admin`
 
 The [legacy frontend](https://github.com/spree/spree_legacy_frontend) is not configured.
+
+## What could be improved?
+
+* [ ] Env vars as params
+* [ ] remove command / args for hard coded
+* [ ] job to run migrations instead of on pod start
+* [ ] Back out rails conf in massdriver.yaml to application-templates/frameworks/rails
