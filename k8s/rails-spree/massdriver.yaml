@@ -54,18 +54,22 @@ params:
           title: Image Tag
           $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
           default: latest
-    command:
-      title: Command
-      description: Command to execute as the entrypoint of the container. If left unspecified, the container default will be used (referred to as 'entrypoint' in some container runtimes, such as Docker). Formatted as an array of strings so that 'exec' form is used.
-      type: array
-      items:
-        type: string
-    args:
-      title: Arguments
-      description: Arguments to pass to the entrypoint command of the container. If left unspecified, the container default will be used (referred to as 'command' in some container runtimes, such as Docker). Formatted as an array of strings so that 'exec' form is used.
-      type: array
-      items:
-        type: string
+    # A default command and args are defined in the ./chart/values.yaml
+    # Uncomment below to enable in the UI.
+    # command:
+    #   title: Command
+    #   description: Command to execute as the entrypoint of the container. If left unspecified, the container default will be used (referred to as 'entrypoint' in some container runtimes, such as Docker). Formatted as an array of strings so that 'exec' form is used.
+    #   type: array
+    #   items:
+    #     type: string
+    #   default: ["./entrypoint.sh"]
+    # args:
+    #   title: Arguments
+    #   description: Arguments to pass to the entrypoint command of the container. If left unspecified, the container default will be used (referred to as 'command' in some container runtimes, such as Docker). Formatted as an array of strings so that 'exec' form is used.
+    #   type: array
+    #   items:
+    #     type: string
+    #   default: ["bundle", "exec", "rails", "server"]
     additionalEnvs:
       title: Environment Variables
       description: "List of environment variables to set in the application runtime. Note: Environment variables from connections should be programmatically set in the application configuration file. See https://docs.massdriver.cloud/applications/getting-started#environment-variable-examples"

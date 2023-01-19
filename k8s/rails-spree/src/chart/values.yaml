@@ -2,8 +2,8 @@ image:
   repository:
   tag:
 
-command: []
-args: []
+command: ["./entrypoint.sh"]
+args: ["bundle", "exec", "rails", "server"]
 
 envs: []
 port:
