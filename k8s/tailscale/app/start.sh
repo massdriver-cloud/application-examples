@@ -12,4 +12,3 @@ until tailscale up --authkey="${TS_AUTH_KEY}" --hostname="${TAILSCALE_HOSTNAME}"
 done
 tailscale status
 wait ${PID}
-wait ${PID}
