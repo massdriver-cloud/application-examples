@@ -6,16 +6,17 @@ access: private
 type: application
 
 app:
-  # TODO: use secret
   envs:
-    TS_AUTH_KEY: '@text "tskey-"'
     # https://tailscale.com/kb/1147/cloud-gce/#step-3-advertise-routes-from-the-vm
     TS_ACCEPT_DNS: '@text "false"'
-    TAILSCALE_HOSTNAME: '@text "tailscale.gcp-gcp-gcp.com"'
+    # might be able to remove this var
+    TAILSCALE_HOSTNAME: '@text "taily.gcp-gcp-gcp.com"'
     TAILSCALE_STATE_ARG: '@text "mem:"'
-  policies: []
-    # Use jq expressions to select policies from artifact security blocks
-    # - .connections.sqs.data.security.iam.subscribe
+  secrets:
+    TS_AUTH_KEY:
+      required: true # if a secret is required, massdriver will block deployments that are missing this secret
+      title: "Tailscale Auth Key"
+      description: "Create an ephemeral Auth Key in your Tailscale account."
 
 params:
   examples:
