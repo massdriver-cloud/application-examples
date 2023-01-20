@@ -14,8 +14,7 @@ async fn main() {
     let routes = warp::any().map(|| {
         info!("serving request");
         Response::builder()
-            .header("my-custom-header", "some-value")
-            .body("Hello, World!")
+            .body("Hello, World! My name is Rusty.")
     });
 
     warp::serve(routes).run(([0, 0, 0, 0], port)).await;
