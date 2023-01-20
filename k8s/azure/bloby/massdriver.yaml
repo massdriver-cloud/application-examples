@@ -1,54 +1,19 @@
 schema: draft-07
-name: phoenix-chat
-description: A Phoenix / Elixir application demo running dwyl/phoenix-chat-example
-source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/phoenix-chat-example
+name: bloby
+description: A bloby
+source_url: github.com/massdriver-cloud/application-examples/tree/main/phoenix-chat
 access: private
 type: application
 
+
 app:
-  # Use jq expressions to build environment variables from input params or connections
   envs:
-    LOG_LEVEL: .params.log_level
-    DATABASE_URL: '@text "postgres://" + .connections.postgres.data.authentication.username + ":" + .connections.postgres.data.authentication.password + "@" + .connections.postgres.data.authentication.hostname + ":" + (.connections.postgres.data.authentication.port|tostring) + "/chat"'
-    DATABASE_SSL: .params.enable_database_ssl
-    PORT: .params.port | tostring
-    HOST: .params.ingress.host
-  # Use jq expressions to select policies from artifact security blocks
-  # - .connections.sqs.data.security.iam.subscribe
-  policies: []
-  secrets:
-    SECRET_KEY_BASE:
-      required: true
-      title: "Secret Key Base"
-      description: Learn more [here](https://hexdocs.pm/phoenix/deployment.html#handling-of-your-application-secrets).
+    AZURE_STORAGE_ACCOUNT_NAME: .connections.storage.data.infrastructure.ari | split("/+";"")[8]
+  policies:
+    - .connections.storage.data.security.iam."read/write"
 
 params:
   properties:
-    log_level:
-      title: Elixir Log Level
-      type: string
-      oneOf:
-        - title: emergency - when system is unusable, panics
-          const: emergency
-        - title: alert - for alerts, actions that must be taken immediately, ex. corrupted database
-          const: alert
-        - title: critical - for critical conditions
-          const: critical
-        - title: error - for errors
-          const: error
-        - title: warning - for warnings
-          const: warning
-        - title: notice - for normal, but significant, messages
-          const: notice
-        - title: info - for information of any kind
-          const: info
-        - title: debug - for debug-related messages
-          const: debug
-    enable_database_ssl:
-      type: boolean
-      title: Enable Database SSL
-      description: Enables SSL support in PostgreSQL.
-      default: true
     namespace:
       title: Kubernetes Namespace
       description: Application will be deployed into this namespace. If the namespace doesn't exist, it will be created.
@@ -183,7 +148,7 @@ params:
 connections:
   required:
     - kubernetes_cluster
-    - postgres
+    - storage
   properties:
     kubernetes_cluster:
       $ref: massdriver/kubernetes-cluster
@@ -193,8 +158,8 @@ connections:
       $ref: massdriver/gcp-service-account
     azure_authentication:
       $ref: massdriver/azure-service-principal
-    postgres:
-      $ref: massdriver/postgresql-authentication
+    storage:
+      $ref: massdriver/azure-storage-account
 
 ui:
   ## If you need to allow an end user to select the container repository at deploy time, our smart widget can be used.
@@ -204,10 +169,10 @@ ui:
   #     ui:field: "containerRepositoriesDropdown"
   #     cloud: "aws"
   ui:order:
-    - log_level
-    - enable_database_ssl
     - namespace
     - image
+    - command
+    - args
     - resourceRequests
     - replicas
     - port

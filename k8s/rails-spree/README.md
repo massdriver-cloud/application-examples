@@ -1,10 +1,6 @@
-# k8s-model-server
+# rails-spree
 
-An example machine-learning model server running on GKE with GPUs.
-
-#### TODO
-
-+ [ ] Integrate with GCS and GCS Fuse
+Ruby on Rails (Spree) Demo Running on Kubernetes
 
 An example application using this template can be found [here](https://github.com/massdriver-cloud/application-examples/tree/main/k8s/phoenix-chat-example).
 

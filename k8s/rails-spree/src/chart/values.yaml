@@ -1,20 +1,19 @@
 image:
-  repository: massdrivercloud/k8s-model-server
-  tag: latest
+  repository:
+  tag:
 
-command: []
-args: []
+command: ["./entrypoint.sh"]
+args: ["bundle", "exec", "rails", "server"]
 
 envs: []
-port: 5000
+port:
 
 serviceAccount:
   annotations: {}
   name:
 
 resourceRequests: {}
-resourceLimits:
-  nvidia.com/gpu: 1
+resourceLimits: {}
 
 replicas:
   autoscalingEnabled: false

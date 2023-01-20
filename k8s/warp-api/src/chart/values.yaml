@@ -1,20 +1,19 @@
 image:
-  repository: massdrivercloud/k8s-model-server
-  tag: latest
+  repository: us-central1-docker.pkg.dev/md-demos/apps/warp-api
+  tag:
 
 command: []
 args: []
 
 envs: []
-port: 5000
+port: 3000
 
 serviceAccount:
   annotations: {}
   name:
 
 resourceRequests: {}
-resourceLimits:
-  nvidia.com/gpu: 1
+resourceLimits: {}
 
 replicas:
   autoscalingEnabled: false

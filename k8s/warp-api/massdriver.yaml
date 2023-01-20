@@ -1,23 +1,19 @@
 schema: draft-07
-name: k8s-model-server
-description: An example machine-learning model server running on GKE with GPUs.
-source_url: github.com/massdriver-cloud/application-examples/k8s-model-server
+name: warp-api
+description: Hello World Rust API running on Kubernetes
+source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/warp-api
 access: private
 type: application
 
 app:
   envs: {}
-  secrets:
-     HUGGINGFACE_TOKEN:
-       required: false
-       title: "Huggingface Token"
-       description: A token is only needed to run stable diffusion on private models.  
   policies: []
 
 params:
   required:
     - image
     - replicas
+    - ingress
   properties:
     image:
       title: Container Image
@@ -114,16 +110,6 @@ params:
             required:
             - host
             - path
-        replicaCount:
-          title: Number of Replicas
-          description: Fixed number of replicas to constantly maintain
-          type: integer
-          minimum: 0
-          default: 1
-    huggingface_token:
-      title: HuggingFace Token
-      description: A token for accessing HuggingFace's model repository
-      type: string
 
 connections:
   required:
@@ -142,9 +128,19 @@ ui:
   ui:order:
     - image
     - replicas
-    - huggingface_token
+    - ingress
     - "*"
   replicas:
     ui:order:
+      - autoscalingEnabled
       - replicaCount
+      - minReplicas
+      - maxReplicas
+      - targetCPUUtilizationPercentage
+      - "*"
+  ingress:
+    ui:order:
+      - enabled
+      - host
+      - path
       - "*"

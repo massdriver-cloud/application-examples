@@ -1,54 +1,37 @@
 schema: draft-07
-name: phoenix-chat
-description: A Phoenix / Elixir application demo running dwyl/phoenix-chat-example
-source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/phoenix-chat-example
+name: rails-spree
+description: Ruby on Rails (Spree) Demo Running on Kubernetes
+source_url: github.com/massdriver-cloud/application-examples
 access: private
 type: application
 
 app:
-  # Use jq expressions to build environment variables from input params or connections
   envs:
-    LOG_LEVEL: .params.log_level
-    DATABASE_URL: '@text "postgres://" + .connections.postgres.data.authentication.username + ":" + .connections.postgres.data.authentication.password + "@" + .connections.postgres.data.authentication.hostname + ":" + (.connections.postgres.data.authentication.port|tostring) + "/chat"'
-    DATABASE_SSL: .params.enable_database_ssl
+    REDIS_URL: '@test "rediss://" + .connections.redis.data.authentication.password + "@" + .connections.redis.data.authentication.hostname + ":" + (.connections.redis.data.authentication.port|tostring)'
+    DATABASE_URL: '@text "postgres://" + .connections.postgres.data.authentication.username + ":" + .connections.postgres.data.authentication.password + "@" + .connections.postgres.data.authentication.hostname + ":" + (.connections.postgres.data.authentication.port|tostring) + "/spree"'
     PORT: .params.port | tostring
-    HOST: .params.ingress.host
-  # Use jq expressions to select policies from artifact security blocks
-  # - .connections.sqs.data.security.iam.subscribe
+    RAILS_ENV: '@text "production"'
+    RAILS_LOG_TO_STDOUT: '@text "true"'
   policies: []
   secrets:
     SECRET_KEY_BASE:
+      title: Secret Key Base
       required: true
-      title: "Secret Key Base"
-      description: Learn more [here](https://hexdocs.pm/phoenix/deployment.html#handling-of-your-application-secrets).
+    ADMIN_EMAIL:
+      title: Default email to set for admin account.
+      required: true
+    ADMIN_PASSWORD:
+      title: Default password to set for admin account.
+      required: true
 
 params:
+  required:
+    - namespace
+    - image
+    - resourceRequests
+    - replicas
+    - ingress
   properties:
-    log_level:
-      title: Elixir Log Level
-      type: string
-      oneOf:
-        - title: emergency - when system is unusable, panics
-          const: emergency
-        - title: alert - for alerts, actions that must be taken immediately, ex. corrupted database
-          const: alert
-        - title: critical - for critical conditions
-          const: critical
-        - title: error - for errors
-          const: error
-        - title: warning - for warnings
-          const: warning
-        - title: notice - for normal, but significant, messages
-          const: notice
-        - title: info - for information of any kind
-          const: info
-        - title: debug - for debug-related messages
-          const: debug
-    enable_database_ssl:
-      type: boolean
-      title: Enable Database SSL
-      description: Enables SSL support in PostgreSQL.
-      default: true
     namespace:
       title: Kubernetes Namespace
       description: Application will be deployed into this namespace. If the namespace doesn't exist, it will be created.
@@ -64,18 +47,32 @@ params:
         repository:
           $md.immutable: true
           title: Repository
-          default: massdrivercloud/phoenix-chat-example
-          # Container repositories can be created or imported into massdriver at: https://app.massdriver.cloud/container-repositories
-          # You'll generally want to hard code your container repository in your bundle code, but it can be helpful to show it
-          # in your schema as well.
-          # If you need to allow an end-user developer to select the container repo, you can use our drop down widget documented here: https://docs.massdriver.cloud/bundles/custom-widgets-and-fields
           description: Container repository to use for this application.
           type: string
+          default: massdrivercloud/rails-spree-example
         tag:
           title: Image Tag
           $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
           default: latest
+    # A default command and args are defined in the ./chart/values.yaml
+    # Uncomment below to enable in the UI.
+    # command:
+    #   title: Command
+    #   description: Command to execute as the entrypoint of the container. If left unspecified, the container default will be used (referred to as 'entrypoint' in some container runtimes, such as Docker). Formatted as an array of strings so that 'exec' form is used.
+    #   type: array
+    #   items:
+    #     type: string
+    #   default: ["./entrypoint.sh"]
+    # args:
+    #   title: Arguments
+    #   description: Arguments to pass to the entrypoint command of the container. If left unspecified, the container default will be used (referred to as 'command' in some container runtimes, such as Docker). Formatted as an array of strings so that 'exec' form is used.
+    #   type: array
+    #   items:
+    #     type: string
+    #   default: ["bundle", "exec", "rails", "server"]
+
     resourceRequests:
+      title: Resources
       type: object
       required:
         - cpu
@@ -89,12 +86,11 @@ params:
         memory:
           title: Memory
           description: The expected Memory resources required for this application.
-          type: number
+          type: integer
     port:
       title: Port
       description: The container port the application will listen on.
       $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/port.json
-      default: 4000
     replicas:
       title: Replicas
       description: Manage the number of concurrent replicas of your application
@@ -152,6 +148,7 @@ params:
         enabled:
           title: Enable Public Internet Access
           type: boolean
+          default: false
       dependencies:
         enabled:
           oneOf:
@@ -179,11 +176,21 @@ params:
               required:
                 - host
                 - path
+    # Uncomment the section below to begin adding any application-specific configuration that is appropriate. See the app.envs section above for how to set environment values from these settings.
+    # configuration:
+    #   title: Configuration
+    #   description: Application specific configuration settings
+    #   type: object
+    #   properties:
+    #     log_level:
+    #       title: Log Level
+    #       type: string
 
 connections:
   required:
     - kubernetes_cluster
     - postgres
+    - redis
   properties:
     kubernetes_cluster:
       $ref: massdriver/kubernetes-cluster
@@ -195,38 +202,35 @@ connections:
       $ref: massdriver/azure-service-principal
     postgres:
       $ref: massdriver/postgresql-authentication
+    redis:
+      $ref: massdriver/redis-authentication
 
 ui:
-  ## If you need to allow an end user to select the container repository at deploy time, our smart widget can be used.
-  ## Additional documentation here: https://docs.massdriver.cloud/bundles/custom-widgets-and-fields
-  # image:
-  #   repository:
-  #     ui:field: "containerRepositoriesDropdown"
-  #     cloud: "aws"
   ui:order:
-    - log_level
-    - enable_database_ssl
     - namespace
     - image
+    - command
+    - args
     - resourceRequests
     - replicas
     - port
     - ingress
+    - "*"
   resourceRequests:
     memory:
       ui:field: conversionFieldData
       unit: Bytes
   replicas:
-    items:
-      ui:order:
-        - autoscalingEnabled
-        - replicaCount
-        - minReplicas
-        - maxReplicas
-        - targetCPUUtilizationPercentage
+    ui:order:
+      - autoscalingEnabled
+      - replicaCount
+      - minReplicas
+      - maxReplicas
+      - targetCPUUtilizationPercentage
+      - "*"
   ingress:
-    items:
-      ui:order:
-        - enabled
-        - host
-        - path
+    ui:order:
+      - enabled
+      - host
+      - path
+      - "*"
