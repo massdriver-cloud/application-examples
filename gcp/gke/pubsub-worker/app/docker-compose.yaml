@@ -10,4 +10,3 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=creds.json
     volumes:
       - ./creds.json:/creds.json
-
