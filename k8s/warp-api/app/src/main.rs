@@ -1,10 +1,22 @@
-#![deny(warnings)]
-use warp::Filter;
+use warp::{Filter, http::Response};
+use tracing::info;
+use tracing_subscriber;
+use std::env;
 
 #[tokio::main]
 async fn main() {
-    // Match any request and return hello world!
-    let routes = warp::any().map(|| "Hello, World!");
+    tracing_subscriber::fmt::init();
 
-    warp::serve(routes).run(([0, 0, 0, 0], 3000)).await;
+    let port = env::var("PORT").unwrap_or("3000".to_string()).parse::<u16>().unwrap();
+    info!(port, "starting server");
+
+    // Match any request
+    let routes = warp::any().map(|| {
+        info!("serving request");
+        Response::builder()
+            .header("my-custom-header", "some-value")
+            .body("Hello, World!")
+    });
+
+    warp::serve(routes).run(([0, 0, 0, 0], port)).await;
 }

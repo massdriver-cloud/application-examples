@@ -1,21 +1,18 @@
 version: "3"
 
-volumes:
-  cargo_cache:
-
 services:
   app_dev:
     build:
       dockerfile: ./Dockerfile
       context: .
+    environment:
+      - PORT=4000
+    ports:
+      - 3000:4000
+
+  app_release:
+    build:
+      dockerfile: ./Dockerfile.release
+      context: .
     ports:
       - 3000:3000
-    volumes:
-      - cargo_cache:/root/.cargo
-
-  app_deploy:
-    platform: linux/amd64
-    build:
-      dockerfile: ./Dockerfile
-      context: .
-    # no volume here because of platform-specific dependencies
