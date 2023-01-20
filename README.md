@@ -4,6 +4,8 @@
 
 Example applications bundles to run on [Massdriver](https://massdriver.cloud).
 
+We have application examples for every Cloud that Massdriver supports. At Massdriver, we sometimes even treat Kubernetes just like the Clouds. The number of our application examples is growing rapidly and it's hard to keep this list maintained, until we automate that too. Feel free to poke around or reach out if you have any questions!
+
 ## Kubernetes
 
 These example application bundles will run on AWS EKS, Azure AKS, and GCP GKE.
@@ -11,23 +13,44 @@ These example application bundles will run on AWS EKS, Azure AKS, and GCP GKE.
 - [Express / Mongo Guestbook](./k8s/express-mongoose-demo/) - Guestbook application running on Express JS and MongoDB
 - [Elixir / Phoenix Chat Example](./k8s/phoenix-chat-example) - Chat application running on Elixir/Phoenix & Postgres 13 (AWS RDS, Cloud SQL, etc)
 
-## Cloud-Specific Examples
+## AWS
 
-### AWS
+### Lambdas
 
-- [Javascript / Lambda](./aws/lambda-transform) - A serverless application that transforms a JSON payload.
+- [NodeJS / Lambda](./aws/lambda-transform) - A serverless application that transforms a JSON payload.
 
-### Azure
+## Azure
 
-- [.NET / MySQL eCommerce App](./azure/app-service) - This app, `nopCommerce`, is a free and open-source eCommerce solution
+### App Service
 
-### GCP
+- [NodeJS / Blob Storage](./azure/app-service/bloby) - A simple hello world Blob Storage application named Bloby.
 
-- [Laravel / PostgreSQL ChatOps](./gcp/cloud-run/laravel) - ChatOps application built with Laravel
+### Function App
+
+- [NodeJS / Blob Storage](./azure/function-app/bloby) - A simple hello world Blob Storage application named Bloby.
+
+## GCP
+
+### Cloud Run
+
+- [PHP / Cachethq](./gcp/cloud-run/cachethq) - Cachethq running on GCP Cloud Run.
+- [NodeJS / Cloud Task Creator](./gcp/cloud-run/cloud-task-creator) - Cloud Tasks creator.
+- [NodeJS / Cloud Task Handler](./gcp/cloud-run/cloud-task-handler) - Application to handle / run a Cloud Task.
+
+### GKE
+
+- [Python / Stable Diffusion](./gcp/gke/model-server) - Simple Stable Diffusion inference API running on GKE standard.
+- [NodeJS / PubSub Consumer](./gcp/gke/pubsub-worker) - Simple PubSub Consumer application.
+
+### VMs - Via Managed Instance Groups
+
+- [Tailscale](./gcp/vm/tailscale) - Tailscale running on VMs in GCP.
 
 ## Source Code For Example Applications
 
-The source code for each example application is included in a folder named `app`. This folder is a git submodule unless the app code is minimal.
+We're in the process of moving all of this information into the `operator.md` for each application. The Operator Guide supports markdown and is also availabile in the Massdriver UI for every bundle. We will provide information about each application or piece of infrastructure, links to source code, etc... Please feel free to open an [Issue](https://github.com/massdriver-cloud/application-examples/issues) on this repository if you'd like to see any of these guides filled out sooner. Cheers!
+
+## Running An Application In Massdriver
 
 **Note:** these are all **live** apps. To run any of the examples yourself, simply follow the steps below.
 
