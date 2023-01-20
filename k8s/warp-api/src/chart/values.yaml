@@ -1,5 +1,5 @@
 image:
-  repository: massdrivercloud/warp-api
+  repository: us-central1-docker.pkg.dev/md-demos/apps/warp-api
   tag:
 
 command: []

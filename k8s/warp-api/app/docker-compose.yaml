@@ -11,6 +11,8 @@ services:
       - 3000:4000
 
   app_release:
+    # TODO: build on arm, compile to x86
+    platform: linux/amd64
     build:
       dockerfile: ./Dockerfile.release
       context: .
