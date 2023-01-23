@@ -33,3 +33,18 @@ commonLabels: {}
 
 pod:
   annotations: {}
+
+migration:
+  command: ["bash", "-c"]
+  args:
+    [
+      "bundle",
+      "exec",
+      "rails",
+      "db:create",
+      "&&",
+      "bundle",
+      "exec",
+      "rails",
+      "db:migrate",
+    ]
