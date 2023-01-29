@@ -1,0 +1,176 @@
+schema: draft-07
+name: k8s-simple-proxy
+description: Because HAProxy config is still a nightmare.
+source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/simple-proxy
+access: private
+type: application
+
+app:
+  envs:
+    BACKENDS: .params.backends
+    BACKEND0: .connections.backend0.data.api.hostname
+    BACKEND1: .connections.backend1.data.api.hostname
+    BACKEND2: .connections.backend2.data.api.hostname
+    BACKEND3: .connections.backend3.data.api.hostname
+    BACKEND4: .connections.backend4.data.api.hostname
+    BACKEND5: .connections.backend5.data.api.hostname
+  policies: []
+
+params:
+  required:
+    - port
+    - image
+    - replicas
+    - ingress
+  properties:
+    port:
+      title: Port
+      type: number
+      default: 4000
+    image:
+      title: Container Image
+      type: object
+      required:
+      - tag
+      properties:
+        tag:
+          title: Image Tag
+          $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
+          default: latest
+    replicas:
+      title: Replicas
+      description: Manage the number of concurrent replicas of your application
+      type: object
+      properties:
+        autoscalingEnabled:
+          title: Enable Horizontal Pod Autoscaling
+          description: A Horizontal Pod Autoscaler will enable your application to automatically add or remove replicas based on resource utilization.
+          type: boolean
+          default: false
+      dependencies:
+        autoscalingEnabled:
+          oneOf:
+          - properties:
+              autoscalingEnabled:
+                const: false
+              replicaCount:
+                title: Number of Replicas
+                description: Fixed number of replicas to constantly maintain
+                type: integer
+                minimum: 1
+                default: 1
+            required:
+            - replicaCount
+          - properties:
+              autoscalingEnabled:
+                const: true
+              minReplicas:
+                title: Minimum Replicas
+                description: Minimum number of replicas the autoscaler will maintain, based on target resource utilization
+                type: integer
+                minimum: 1
+                default: 1
+              maxReplicas:
+                title: Maximum Replicas
+                description: Maximum number of replicas the autoscaler will provision, based on target resource utilization
+                type: integer
+                minimum: 1
+                default: 10
+              targetCPUUtilizationPercentage:
+                title: Target CPU Utilization Percentage
+                description: The percentage of allocated CPU resources the autoscaler should target, based on the values specified in the 'Resources' section. If utilization rises sufficiently above this percentage, replicas will be added. If utilization drops sufficiently below this percentage, replicas will be removed.
+                type: integer
+                minimum: 1
+                default: 80
+            required:
+            - minReplicas
+            - maxReplicas
+            - targetCPUUtilizationPercentage
+    ingress:
+      title: Ingress
+      description: Configure the application for public internet accessibility
+      type: object
+      properties:
+        enabled:
+          title: Enable Public Internet Access
+          type: boolean
+          default: false
+      dependencies:
+        enabled:
+          oneOf:
+          - properties:
+              enabled:
+                const: false
+          - properties:
+              enabled:
+                const: true
+              host:
+                title: HTTP Hostname
+                description: The hostname which this application should be accessable on, such as www.example.com. You must own this domain and have it associated with this kubernetes cluster if you would like automatic DNS record and SSL certificate management.
+                type: string
+                pattern: ^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$
+                message:
+                  pattern: Hostname should consist of letters, numbers, periods and hyphens, such as www.example.com
+              path:
+                title: HTTP Path
+                description: The HTTP path which, when appended to the host above, this application will serve traffic on
+                type: string
+                default: "/"
+                pattern: ^\/.*$
+                message:
+                  pattern: Must begin with a '/' and be a valid HTTP endpoint
+            required:
+            - host
+            - path
+
+connections:
+  required:
+    - kubernetes_cluster
+  properties:
+    kubernetes_cluster:
+      $ref: massdriver/kubernetes-cluster
+    aws_authentication:
+      $ref: massdriver/aws-iam-role
+    gcp_authentication:
+      $ref: massdriver/gcp-service-account
+    azure_authentication:
+      $ref: massdriver/azure-service-principal
+    backend0:
+      $ref: massdriver/api
+    backend1:
+      $ref: massdriver/api
+    backend2:
+      $ref: massdriver/api
+    backend3:
+      $ref: massdriver/api
+    backend4:
+      $ref: massdriver/api
+    backend5:
+      $ref: massdriver/api
+
+artifacts:
+  required: []
+  properties:
+    endpoint:
+      $ref: massdriver/api
+
+ui:
+  ui:order:
+    - image
+    - replicas
+    - ingress
+    - "*"
+  replicas:
+    ui:order:
+      - autoscalingEnabled
+      - replicaCount
+      - minReplicas
+      - maxReplicas
+      - targetCPUUtilizationPercentage
+      - "*"
+  ingress:
+    ui:order:
+      - enabled
+      - host
+      - path
+      - "*"
