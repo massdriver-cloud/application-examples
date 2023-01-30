@@ -11,7 +11,7 @@ let backends = [];
 // I tried HAProxy for an hour...
 app.get('/', (req, res) => {
   const theOne = backends[Math.floor(Math.random() * backends.length)];
-  logger.info(`Winner winner, you pick your dinner. I'm sending the requst to: ${theONe}`);
+  logger.info(`Winner winner, you pick your dinner. I'm sending the requst to: ${theOne}`);
 
   request.get(theOne, (err, response, body) => {
     if (!err) {
