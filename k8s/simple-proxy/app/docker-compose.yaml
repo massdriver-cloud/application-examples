@@ -10,6 +10,8 @@ services:
     environment:
       # - BACKENDS=https://aks-app-000.mdazuresbx.com/,https://app-service-001.mdazuresbx.com/,https://function-app-003.mdazuresbx.com/,https://vm-000.mdazuresbx.com/
       - BACKEND0=https://aks-app-000.mdazuresbx.com/
+      - BACKEND3=https://another-app.mdazuresbx.com/
+      - LOG_LEVEL=info
 
   app_release:
     platform: linux/amd64
