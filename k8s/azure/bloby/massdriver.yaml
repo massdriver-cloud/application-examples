@@ -1,60 +1,34 @@
 schema: draft-07
-name: bloby
+name: k8s-bloby
 description: A bloby
-source_url: github.com/massdriver-cloud/application-examples/tree/main/phoenix-chat
+source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s-bloby
 access: private
 type: application
 
-
 app:
   envs:
+    PORT: .params.port
     AZURE_STORAGE_ACCOUNT_NAME: .connections.storage.data.infrastructure.ari | split("/+";"")[8]
   policies:
-    - .connections.storage.data.security.iam."read/write"
+    - .connections.storage.data.security.iam.read_write
 
 params:
+  required:
+    - image
+    - port
+    - replicas
+    - ingress
   properties:
-    namespace:
-      title: Kubernetes Namespace
-      description: Application will be deployed into this namespace. If the namespace doesn't exist, it will be created.
-      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/k8s-resource-name.json
-      default: default
     image:
       title: Container Image
       type: object
       required:
-        - repository
         - tag
       properties:
-        repository:
-          $md.immutable: true
-          title: Repository
-          default: massdrivercloud/phoenix-chat-example
-          # Container repositories can be created or imported into massdriver at: https://app.massdriver.cloud/container-repositories
-          # You'll generally want to hard code your container repository in your bundle code, but it can be helpful to show it
-          # in your schema as well.
-          # If you need to allow an end-user developer to select the container repo, you can use our drop down widget documented here: https://docs.massdriver.cloud/bundles/custom-widgets-and-fields
-          description: Container repository to use for this application.
-          type: string
         tag:
           title: Image Tag
           $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
           default: latest
-    resourceRequests:
-      type: object
-      required:
-        - cpu
-        - memory
-      properties:
-        cpu:
-          title: CPU Cores
-          description: The expected CPU cores required for this application. Fractional numbers are allowed (0.5 is one half of a CPU core).
-          type: number
-          minimum: 0.001
-        memory:
-          title: Memory
-          description: The expected Memory resources required for this application.
-          type: number
     port:
       title: Port
       description: The container port the application will listen on.
@@ -117,6 +91,7 @@ params:
         enabled:
           title: Enable Public Internet Access
           type: boolean
+          default: false
       dependencies:
         enabled:
           oneOf:
@@ -161,6 +136,12 @@ connections:
     storage:
       $ref: massdriver/azure-storage-account
 
+artifacts:
+  required: []
+  properties:
+    endpoint:
+      $ref: massdriver/api
+
 ui:
   ## If you need to allow an end user to select the container repository at deploy time, our smart widget can be used.
   ## Additional documentation here: https://docs.massdriver.cloud/bundles/custom-widgets-and-fields
@@ -173,14 +154,9 @@ ui:
     - image
     - command
     - args
-    - resourceRequests
     - replicas
     - port
     - ingress
-  resourceRequests:
-    memory:
-      ui:field: conversionFieldData
-      unit: Bytes
   replicas:
     items:
       ui:order:

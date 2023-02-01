@@ -48,3 +48,12 @@ provider "helm" {
     token                  = local.kubernetes_cluster.data.authentication.user.token
   }
 }
+
+provider "azurerm" {
+  features {}
+
+  client_id       = var.azure_authentication.data.client_id
+  tenant_id       = var.azure_authentication.data.tenant_id
+  client_secret   = var.azure_authentication.data.client_secret
+  subscription_id = var.azure_authentication.data.subscription_id
+}
