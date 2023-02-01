@@ -9,7 +9,7 @@ app:
   envs:
     AZURE_STORAGE_ACCOUNT_NAME: .connections.storage.data.infrastructure.ari | split("/+";"")[8]
   policies:
-    - .connections.storage.data.security.iam."read/write"
+    - .connections.storage.data.security.iam.read_write
 
 params:
   examples:
@@ -28,14 +28,6 @@ params:
     - docker
     - dns
   properties:
-    # As an example, uncomment the section below to add a parameter for the logging level of your application. See the app.envs section above for how to set environment values from application parameters.
-    # log_level:
-    #   type: string
-    #   title: Log Level
-    #   enum:
-    #     - info
-    #     - warn
-    #     - error
     application:
       title: Application
       description: Application configuration
@@ -119,7 +111,7 @@ params:
         tag:
           title: Image Tag
           $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
-          default: connection-string
+          default: latest
     dns:
       title: DNS
       description: DNS configuration
@@ -160,13 +152,28 @@ connections:
   required:
     - azure_service_principal
     - azure_virtual_network
+    - storage
   properties:
     azure_service_principal:
       $ref: massdriver/azure-service-principal
     azure_virtual_network:
       $ref: massdriver/azure-virtual-network
+    storage:
+      $ref: massdriver/azure-storage-account
+
+artifacts:
+  required: []
+  properties:
+    endpoint:
+      $ref: massdriver/api
 
 ui:
+  ## If you need to allow an end user to select the container repository at deploy time, our smart widget can be used.
+  ## Additional documentation here: https://docs.massdriver.cloud/bundles/custom-widgets-and-fields
+  # image:
+  #   repository:
+  #     ui:field: "containerRepositoriesDropdown"
+  #     cloud: "aws"
   ui:order:
     - application
     - docker
