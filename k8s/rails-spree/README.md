@@ -2,11 +2,9 @@
 
 Ruby on Rails (Spree) Demo Running on Kubernetes
 
-An example application using this template can be found [here](https://github.com/massdriver-cloud/application-examples/tree/main/k8s/phoenix-chat-example).
-
 ## Massdriver `rails-kubernetes` Template
 
-This application bundle was generated from [rails-kubernetes](https://github.com/massdriver-cloud/application-templates/tree/main/rails-kubernetes). An example application using this template can be found [here](https://github.com/massdriver-cloud/application-examples/tree/main/k8s/rails-spree).
+This example application bundle is built using the [Ruby on Rails Helm Chart](https://artifacthub.io/packages/helm/massdriver/ruby-on-rails) and the Massdriver [Rails on Kubernetes](https://github.com/massdriver-cloud/application-templates/tree/main/rails-kubernetes) application template.
 
 The `rails-kubernetes` template will run your Rails application on Kubernetes. This template supports AWS EKS, GCP GKE, Azure AKS, bare metal Kubernetes and managed Kubernetes.
 
