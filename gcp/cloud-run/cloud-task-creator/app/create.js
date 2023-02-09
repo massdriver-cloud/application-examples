@@ -41,4 +41,3 @@ exports.createHttpTaskWithToken = async function createHttpTaskWithToken() {
   console.log(`Created task ${name}`);
 }
 // createHttpTaskWithToken();
-

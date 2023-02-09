@@ -1,6 +1,6 @@
 image:
   repository: bitnami/elasticsearch-curator
-  tag: 
+  tag:
 
 command: ["curator"]
 args: ["--config", "/etc/config/config.yml", "/etc/config/action_file.yml"]

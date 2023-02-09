@@ -11,7 +11,7 @@ app:
      HUGGINGFACE_TOKEN:
        required: false
        title: "Huggingface Token"
-       description: A token is only needed to run stable diffusion on private models.  
+       description: A token is only needed to run stable diffusion on private models.
   policies: []
 
 params:

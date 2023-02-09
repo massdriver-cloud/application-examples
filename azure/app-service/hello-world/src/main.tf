@@ -1,5 +1,5 @@
 module "application_app_service" {
-  source             = "github.com/massdriver-cloud/terraform-modules//massdriver-application-azure-app-service?ref=59cc37c"
+  source      = "github.com/massdriver-cloud/terraform-modules//massdriver-application-azure-app-service?ref=59cc37c"
   md_metadata = var.md_metadata
   application = var.application
   image = merge(var.image, {
