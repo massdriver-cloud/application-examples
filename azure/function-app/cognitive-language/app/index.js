@@ -6,27 +6,24 @@ const app = express()
 const port = process.env.PORT || 80
 
 // Example method for detecting the language of text
-async function languageDetection() {
-   const endpoint = process.env.COGNITIVE_SERVICES_ENDPOINT;
-   if (!endpoint) throw Error('value for COGNITIVE_SERVICES_ENDPOINT not found');
-    const client = new TextAnalyticsClient(endpoint, new DefaultAzureCredential());
+async function languageDetection(request) {
+  const endpoint = process.env.COGNITIVE_SERVICES_ENDPOINT;
+  if (!endpoint) throw Error('value for COGNITIVE_SERVICES_ENDPOINT not found');
+  const client = new TextAnalyticsClient(endpoint, new DefaultAzureCredential());
+  const prompt = request.params || "Ce document est rédigé en Français.";
+  const languageResult = await client.detectLanguage(prompt);
 
-    const languageInputArray = [
-        "Ce document est rédigé en Français."
-    ];
-    const languageResult = await client.detectLanguage(languageInputArray);
-
-    const results = [];
-    languageResult.forEach(document => {
-        console.log(`ID: ${document.id}`);
-        console.log(`\tPrimary Language ${document.primaryLanguage.name}`)
-        results.push(document);
-    });
-    return results;
+  const results = [];
+  languageResult.forEach(document => {
+    console.log(`ID: ${document.id}`);
+    console.log(`\tPrimary Language ${document.primaryLanguage.name}`)
+    results.push(document);
+  });
+  return results;
 }
 
 app.get('/', (req, res) => {
-  languageDetection()
+  languageDetection(req)
     .then((response) => res.send(response))
     .catch((ex) => res.send(ex.message));
 })
