@@ -1,6 +1,6 @@
 # Ruby on Rails 7 Demo on Kubernetes
 
-This runs a demo of the e-commerce platform Spree using the `rails-kubernetes` application template. 
+This runs a demo of the e-commerce platform Spree using the `rails-kubernetes` application template.
 
 **Links:**
 

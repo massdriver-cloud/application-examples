@@ -110,4 +110,3 @@ ui:
       name:
         ui:field: dnsZonesDropdown
         cloud: gcp
-
