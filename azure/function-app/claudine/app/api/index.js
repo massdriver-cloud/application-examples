@@ -1,31 +1,118 @@
 import cors from 'cors';
 import express from 'express';
+import htmlExpress from 'html-express-js';
+import createError from 'http-errors';
 import path from 'path';
 import {
   analyzeSentiment,
-  languageDetection
+  detectLanguage,
+  entitiesLinking,
+  entitiesRecognitionGeneral,
+  entitiesRecognitionPii,
+  extractKeyPhrases,
+  keyPhrases,
+  languages,
+  recognizeEntities,
+  recognizeLinkedEntities,
+  recognizePiiEntities,
+  sentiment
 } from "./text/index.js";
 
 const app = express();
 const port = process.env.PORT || 80;
 
+const endpoint = process.env.COGNITIVE_SERVICES_ENDPOINT;
+if (!endpoint) throw Error('value for COGNITIVE_SERVICES_ENDPOINT not found');
+const client = new TextAnalyticsClient(endpoint, new DefaultAzureCredential());
+
+// set up engine
+app.engine(
+  'js',
+  htmlExpress()
+);
+
+app.set('view engine', 'js');
+app.set('views', `/app-ui/build`);
 // To serve CSS and other static files from the public dir
-app.use(express.static("/app-ui/build"));
+app.use(express.static(path.join("/app-ui", "build")));
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join("/app-ui/build", "index.html"));
+  res.sendFile(path.join("/app-ui/", "build", "index.html"));
 });
 
-app.get('/language', (req, res) => {
-  languageDetection(req)
-    .then((response) => res.send(response))
+
+app.post('/analyzeSentiment', (req, res) => {
+  analyzeSentiment(client, req)
+    .then((response) => res.json(response))
     .catch((ex) => res.send(ex.message));
 });
 
-app.get('/sentiment', (req, res) => {
-  analyzeSentiment(req)
-    .then((response) => res.send(response))
+app.post('/detectLanguage', (req, res) => {
+  detectLanguage(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/entitiesLinking', (req, res) => {
+  entitiesLinking(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/entitiesRecognitionGeneral', (req, res) => {
+  entitiesRecognitionGeneral(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/entitiesRecognitionPii', (req, res) => {
+  entitiesRecognitionPii(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/extractKeyPhrases', (req, res) => {
+  extractKeyPhrases(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/keyPhrases', (req, res) => {
+  keyPhrases(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/languages', (req, res) => {
+  languages(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/recognizeEntities', (req, res) => {
+  recognizeEntities(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/recognizeLinkedEntities', (req, res) => {
+  recognizeLinkedEntities(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/recognizePiiEntities', (req, res) => {
+  recognizePiiEntities(client, req)
+    .then((response) => res.json(response))
+    .catch((ex) => res.send(ex.message));
+});
+
+app.post('/sentiment', (req, res) => {
+  sentiment(client, req)
+    .then((response) => res.json(response))
     .catch((ex) => res.send(ex.message));
 });
 
@@ -46,7 +133,9 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  console.log(err);
+  // res.render("error");
+  res.send("error");
 });
 
 app.listen(port, () => {

@@ -1,7 +1,7 @@
 
-async function sentiment(client, request) {
+async function analyzeSentiment(client, request) {
   const prompt = request.query.prompt || "I'm very upset";
-  const languageResult = await client.sentiment([prompt]);
+  const languageResult = await client.analyzeSentiment([prompt]);
 
   const results = [];
   languageResult.forEach(document => {
@@ -11,5 +11,5 @@ async function sentiment(client, request) {
 }
 
 export {
-  sentiment,
+  analyzeSentiment,
 };
