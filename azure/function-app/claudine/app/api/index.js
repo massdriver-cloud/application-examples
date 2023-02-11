@@ -7,20 +7,25 @@ import {
 } from "./text/index.js";
 
 const app = express();
-app.use(cors());
 const port = process.env.PORT || 80;
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+// To serve CSS and other static files from the public dir
+app.use(express.static("/app-ui/build"));
+app.use(cors());
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join("/app-ui/build", "index.html"));
+});
+
+app.get('/language', (req, res) => {
   languageDetection(req)
-    .then((response) => res.send(response));
+    .then((response) => res.send(response))
     .catch((ex) => res.send(ex.message));
 });
 
 app.get('/sentiment', (req, res) => {
   analyzeSentiment(req)
-    .then((response) => res.send(response));
+    .then((response) => res.send(response))
     .catch((ex) => res.send(ex.message));
 });
 

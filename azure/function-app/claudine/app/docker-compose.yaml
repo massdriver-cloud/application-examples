@@ -1,17 +1,17 @@
 version: "3"
 
 services:
-  api_dev:
+  app_dev:
     build:
-      context: ./api
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./docker/Dockerfile
     ports:
       - 4000:80
     environment:
       - COGNITIVE_SERVICES_ENDPOINT=https://unique12345.cognitiveservices.azure.com/
 
-  api_release:
+  app_release:
     platform: linux/amd64
     build:
-      context: ./api
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./docker/Dockerfile.release
