@@ -5,6 +5,13 @@ source_url: github.com/massdriver-cloud/application-templates/aws/api-gateway-la
 access: private
 type: application
 
+steps:
+  - path: src
+    provisioner: terraform
+  - path: deployment
+    provisioner: terraform
+    skip_on_delete: true
+
 params:
   properties:
     api:
