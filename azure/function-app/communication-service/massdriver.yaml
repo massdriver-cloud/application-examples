@@ -1,7 +1,7 @@
 schema: draft-07
-name: darth-email
+name: darth-emailer
 description: I have the high ground of emails.
-source_url: github.com/YOUR_ORG/darth-email
+source_url: github.com/YOUR_ORG/darth-emailer
 access: private
 type: application
 
