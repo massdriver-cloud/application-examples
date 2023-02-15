@@ -9,12 +9,9 @@ services:
       - 4000:4000
     environment:
       - ENDPOINT=${ENDPOINT}
-      - SENDER_EMAIL=${SENDER_EMAIL}
-      - RECIPIENT_EMAIL=${RECIPIENT_EMAIL}
-      - RECIPIENT_NAME=${RECIPIENT_NAME}
 
   app_release:
     platform: linux/amd64
     build:
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile.release
       context: .
