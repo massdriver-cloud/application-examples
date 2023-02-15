@@ -1,7 +1,7 @@
 schema: draft-07
-name: function-app-cognitive-language
-description: This is an example of how to use Azure Cognitive Services.
-source_url: github.com/YOUR_ORG/cognitive-language
+name: function-app-claudine
+description: Claudine uses Azure Cognitive Services to help you analyze text.
+source_url: github.com/YOUR_ORG/function-app-claudine
 access: private
 type: application
 
