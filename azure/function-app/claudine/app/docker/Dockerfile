@@ -17,6 +17,5 @@ COPY api/package.json package.json
 RUN yarn install
 
 COPY api /app-api
-# RUN yarn install
 
 CMD ["yarn", "start"]
