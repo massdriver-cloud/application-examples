@@ -8,9 +8,6 @@ type: application
 app:
   envs:
     ENDPOINT: .connections.azure_communication_service.data.authentication.endpoint
-    SENDER_EMAIL: .params.sender_email
-    RECIPIENT_EMAIL: .params.recipient_email
-    RECIPIENT_NAME: .params.recipient_name
   policies:
     - .connections.azure_communication_service.data.security.iam.read_write
 
@@ -201,18 +198,6 @@ params:
               default: 50
               minimum: 25
               maximum: 100
-    sender_email:
-      title: Sender email
-      type: string
-      description: The email address to use as the sender for all emails sent by the application.
-    recipient_email:
-      title: Recipient email
-      type: string
-      description: The email address to use as the recipient for all emails sent by the application.
-    recipient_name:
-      title: Recipient name
-      type: string
-      description: The name to use as the recipient for all emails sent by the application.
     docker:
       title: Container Configuration
       description: "Set the tag for the image"
@@ -345,6 +330,8 @@ ui:
       - "*"
   docker:
     ui:order:
+      - registry
+      - image
       - tag
       - "*"
   dns:

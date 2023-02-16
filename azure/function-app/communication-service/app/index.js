@@ -27,7 +27,7 @@ async function main(request) {
     emailPlainText,
     // string
     emailHTML,
-   } = request.body;
+  } = request.body;
 
   const recipientObjects = [];
   recipients.forEach((recipient) => {
