@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  app_dev:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    ports:
+      - 4000:4000
+    environment:
+      - ENDPOINT=${ENDPOINT}
+
+  app_release:
+    platform: linux/amd64
+    build:
+      dockerfile: ./Dockerfile.release
+      context: .
