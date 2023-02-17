@@ -1,3 +1,5 @@
+import { TextAnalyticsClient } from "@azure/ai-text-analytics";
+import { DefaultAzureCredential } from '@azure/identity';
 import cors from 'cors';
 import express from 'express';
 import htmlExpress from 'html-express-js';

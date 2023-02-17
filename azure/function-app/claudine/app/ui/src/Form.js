@@ -8,9 +8,16 @@ import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
 
 function Form() {
-  const [langFeature, setLangFeature] = useState("");
+  const [langFeature, setLangFeature] = useState("/analyzeSentiment");
+  const [promptText, setPromptText] = useState("Hello world");
+  const [langResult, setLangResult] = useState({});
+
   const handleChange = (event: SelectChangeEvent) => {
     setLangFeature(event.target.value);
+  };
+
+  const handleTextChange  = (event: SelectChangeEvent) => {
+    setPromptText(event.target.value);
   };
 
   async function handleSubmit(e) {
@@ -18,13 +25,15 @@ function Form() {
     e.preventDefault();
 
     // Read the form data
-    const form = e.target;
-    const formData = new FormData(form);
+    // const form = e.target;
+    // const formData = new FormData(form);
+    const body = {
+      prompt: promptText
+    }
 
-    // You can pass formData as a fetch body directly:
-    const response = await fetch('/language', { method: form.method, body: formData });
+    const response = await fetch(langFeature, { method: 'POST', body: body });
     const data = await response.json();
-    // setLang(data[0].primaryLanguage.name);
+    setLangResult(data);
   }
 
   return (
@@ -64,10 +73,13 @@ function Form() {
           required
           id="outlined-required"
           label="Phrase"
-          defaultValue="Hello World"
+          value={promptText}
+          onChange={handleTextChange}
         />
         <br />
-        <Button variant="contained">Submit</Button>
+        <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+        <br />
+        <pre>{JSON.stringify(langResult, null, 2) }</pre>
       </Box>
     </>
   )
