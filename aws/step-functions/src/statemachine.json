@@ -1,0 +1,81 @@
+{
+    "Comment": "A FizzBuzz of the Amazon States Language using an AWS Lambda Function",
+    "StartAt": "FirstState",
+    "States": {
+        "FirstState": {
+            "Type": "Parallel",
+            "Next": "CheckMatch",
+            "Branches": [
+                {
+                    "StartAt": "TestFizz",
+                    "States": {
+                        "TestFizz": {
+                            "Type": "Task",
+                            "Resource": "${fizz_arn}",
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "TestBuzz",
+                    "States": {
+                        "TestBuzz": {
+                            "Type": "Task",
+                            "Resource": "${buzz_arn}",
+                            "End": true
+                        }
+                    }
+                }
+            ]
+        },
+        "CheckMatch": {
+            "Type": "Choice",
+            "Choices": [
+                {
+                    "And": [
+                        {
+                            "Variable": "$[0]",
+                            "NumericEquals": 0
+                        },
+                        {
+                            "Variable": "$[1]",
+                            "NumericEquals": 0
+                        }
+                    ],
+                    "Next": "FizzBuzz"
+                },
+                {
+                    "Variable": "$[0]",
+                    "NumericEquals": 0,
+                    "Next": "Fizz"
+                },
+                {
+                    "Variable": "$[1]",
+                    "NumericEquals": 0,
+                    "Next": "Buzz"
+                }
+            ],
+            "Default": "NoMatch"
+        },
+        "FizzBuzz": {
+            "Type": "Pass",
+            "Result": "FizzBuzz",
+            "End": true
+        },
+        "Fizz": {
+            "Type": "Pass",
+            "Result": "Fizz",
+            "End": true
+        },
+        "Buzz": {
+            "Type": "Pass",
+            "Result": "Buzz",
+            "End": true
+        },
+        "NoMatch": {
+            "Type": "Pass",
+            "Result": "Nope",
+            "End": true
+        }
+    }
+}
