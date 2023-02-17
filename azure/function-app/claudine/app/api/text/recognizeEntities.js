@@ -1,7 +1,7 @@
 
 
 async function recognizeEntities(client, request) {
-  const prompt = request.query.prompt || "Ce document est rédigé en Français.";
+  const prompt = request.body.prompt || "Ce document est rédigé en Français.";
   const languageResult = await client.recognizeEntities([prompt]);
 
   const results = [];

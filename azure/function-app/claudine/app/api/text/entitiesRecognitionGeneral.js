@@ -1,7 +1,7 @@
 
 
 async function entitiesRecognitionGeneral(client, request) {
-  const prompt = request.query.prompt || "Ce document est rédigé en Français.";
+  const prompt = request.body.prompt || "Ce document est rédigé en Français.";
   const languageResult = await client.entitiesRecognitionGeneral([prompt]);
 
   const results = [];
@@ -13,5 +13,5 @@ async function entitiesRecognitionGeneral(client, request) {
 }
 
 export {
-  entitiesRecognitionGeneral,
+    entitiesRecognitionGeneral,
 };

@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
+import JSONPretty from 'react-json-pretty';
 
 function Form() {
   const [langFeature, setLangFeature] = useState("/analyzeSentiment");
@@ -31,7 +32,13 @@ function Form() {
       prompt: promptText
     }
 
-    const response = await fetch(langFeature, { method: 'POST', body: body });
+    const response = await fetch(langFeature, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body:  JSON.stringify(body),
+    });
     const data = await response.json();
     setLangResult(data);
   }
@@ -78,9 +85,9 @@ function Form() {
         />
         <br />
         <Button variant="contained" onClick={handleSubmit}>Submit</Button>
-        <br />
-        <pre>{JSON.stringify(langResult, null, 2) }</pre>
       </Box>
+      <br />
+      <JSONPretty data={langResult} style={{ fontSize: "16px" }}></JSONPretty>
     </>
   )
 }

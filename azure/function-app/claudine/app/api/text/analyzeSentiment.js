@@ -1,6 +1,6 @@
 
 async function analyzeSentiment(client, request) {
-  const prompt = request.query.prompt || "I'm very upset";
+  const prompt = request.body.prompt || "Ce document est rédigé en Français.";
   const languageResult = await client.analyzeSentiment([prompt]);
 
   const results = [];

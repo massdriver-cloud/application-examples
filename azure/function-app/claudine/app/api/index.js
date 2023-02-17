@@ -45,7 +45,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join("/app-ui/", "build", "index.html"));
 });
 
-
 app.post('/analyzeSentiment', (req, res) => {
   analyzeSentiment(client, req)
     .then((response) => res.json(response))

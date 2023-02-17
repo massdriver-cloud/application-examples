@@ -1,6 +1,6 @@
 
 async function entitiesLinking(client, request) {
-  const prompt = request.query.prompt || "Ce document est rédigé en Français.";
+  const prompt = request.body.prompt || "Ce document est rédigé en Français.";
   const languageResult = await client.entitiesLinking([prompt]);
 
   const results = [];
@@ -12,5 +12,5 @@ async function entitiesLinking(client, request) {
 }
 
 export {
-  entitiesLinking,
+    entitiesLinking,
 };

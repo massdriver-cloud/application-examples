@@ -1,6 +1,6 @@
 
 async function languages(client, request) {
-  const prompt = request.query.prompt || "Ce document est rédigé en Français.";
+  const prompt = request.body.prompt || "Ce document est rédigé en Français.";
   const languageResult = await client.languages([prompt]);
 
   const results = [];
@@ -12,5 +12,5 @@ async function languages(client, request) {
 }
 
 export {
-  languages,
+    languages,
 };

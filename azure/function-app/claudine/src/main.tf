@@ -5,7 +5,7 @@ module "application" {
   application = var.application
   docker = merge(var.docker, {
     registry = "massdrivercentralus.azurecr.io"
-    image    = "cognitive/language"
+    image    = "cognitive/claudine"
   })
   network = {
     auto = true
