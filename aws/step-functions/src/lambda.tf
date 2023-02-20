@@ -65,17 +65,18 @@ resource "aws_iam_role" "iam_for_sfn" {
 EOF
 }
 
-data "template_file" "sfn_def" {
-  template = file("${path.module}/statemachine.json")
-  vars = {
-    fizz_arn = aws_lambda_function.fizz.arn
-    buzz_arn = aws_lambda_function.buzz.arn
-  }
+locals {
+  template_file_rendered = templatefile("${path.module}/statemachine.json",
+    {
+      fizz_arn = aws_lambda_function.fizz.arn
+      buzz_arn = aws_lambda_function.buzz.arn
+    }
+  )
 }
 
 resource "aws_sfn_state_machine" "sfn_state_machine" {
   name     = var.md_metadata.name_prefix
   role_arn = aws_iam_role.iam_for_sfn.arn
 
-  definition = data.template_file.sfn_def.rendered
+  definition = local.template_file_rendered
 }
