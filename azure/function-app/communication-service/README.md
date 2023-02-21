@@ -31,13 +31,16 @@ Below are the steps needed to deploy this example in Massdriver:
 17. Send a POST request to the app endpoint using this in body (raw JSON):
 ```JSON
 {
-  "subject": "{{emailSubject}}",
-  "senderEmail": "{{emailService_mailfromAddress}}",
+  "subject": "Test subject",
+  "senderEmail": "jimmy@massdriver.cloud",
   "recipients": [{
-    "email": "{{emailRecipient}}",
-    "displayName": "{{emailRecipientName}}"
+    "email": "jimbo@massdriver.cloud",
+    "displayName": "Jimbo"
   }],
-  "emailPlainText": "{{emailBody}}"
+  "emailPlainText": "Hey Jimbo,
+  This is a test email from Massdriver.
+  Thanks,
+  Jimmy",
 }
 ```
 And this in header:
