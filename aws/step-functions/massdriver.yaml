@@ -1,5 +1,5 @@
 schema: draft-07
-name: step-functions
+name: aws-step-functions
 description: Example step functions
 source_url: github.com/massdriver_cloud/application_examples/aws/step-functions
 access: private

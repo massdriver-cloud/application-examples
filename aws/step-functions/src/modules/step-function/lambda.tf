@@ -1,32 +1,15 @@
-resource "aws_lambda_function" "buzz" {
-  function_name = "buzz"
+resource "aws_lambda_function" "main" {
+  for_each = toset(local.lambda_functions)
+  function_name = each.value.name
   package_type  = "Image"
   role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "index.handler"
-  image_uri     = "localhost:4510/buzz"
-  publish       = true
-}
-
-resource "aws_lambda_function" "fizz" {
-  function_name = "fizz"
-  package_type  = "Image"
-  role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "index.handler"
-  image_uri     = "localhost:4510/fizz"
-  publish       = true
-}
-
-resource "aws_lambda_function" "fizzbuzz" {
-  function_name = "fizzbuzz"
-  package_type  = "Image"
-  role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "index.handler"
-  image_uri     = "localhost:4510/fizzbuzz"
+  handler       = each.value.handler
+  image_uri     = "localhost:4510/${each.value.name}"
   publish       = true
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name = "${var.md_metadata.name_prefix}-lambda"
 
   assume_role_policy = <<EOF
 {
@@ -45,8 +28,8 @@ resource "aws_iam_role" "iam_for_lambda" {
 EOF
 }
 
-resource "aws_iam_role" "iam_for_sfn" {
-  name = "iam_for_sfn"
+resource "aws_iam_role" "iam_for_sfn_state_machine" {
+  name = "${var.md_metadata.name_prefix}-sfn"
 
   assume_role_policy = <<EOF
 {
@@ -74,9 +57,9 @@ locals {
   )
 }
 
-resource "aws_sfn_state_machine" "sfn_state_machine" {
+resource "aws_sfn_state_machine" "main" {
   name     = var.md_metadata.name_prefix
-  role_arn = aws_iam_role.iam_for_sfn.arn
+  role_arn = aws_iam_role.iam_for_sfn_state_machine.arn
 
   definition = local.template_file_rendered
 }
