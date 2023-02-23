@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "main" {
-  for_each = toset(local.lambda_functions)
+  for_each      = toset(local.lambda_functions)
   function_name = each.value.name
   package_type  = "Image"
   role          = aws_iam_role.iam_for_lambda.arn

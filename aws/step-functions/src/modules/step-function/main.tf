@@ -11,15 +11,15 @@
 locals {
   lambda_functions = [
     {
-      name = "buzz"
+      name    = "buzz"
       handler = "index.handler"
     },
     {
-      name = "fizz"
+      name    = "fizz"
       handler = "index.handler"
     },
     {
-      name = "fizzbuzz"
+      name    = "fizzbuzz"
       handler = "index.handler"
     }
   ]
