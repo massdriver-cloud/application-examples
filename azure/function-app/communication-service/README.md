@@ -1,6 +1,6 @@
 # communication-service
 
-This example provisions a Function App that can connect to an Azure Communication Service bundle. This example is using the Azure Email Communication Services resource, which is still in public preview. 
+This example provisions a Function App that can connect to an Azure Communication Service bundle. This example is using the [Azure Email Communication Services](https://learn.microsoft.com/en-us/azure/communication-services/concepts/email/email-overview) resource, which is still in public preview.
 
 Once the Email service is generally available, we will build the bundle to deploy this from within Massdriver.
 
@@ -14,7 +14,7 @@ Below are the steps needed to deploy this example in Massdriver:
 3. Drag an `azure-virtual-network`, `azure-communication-service`, and the example app into your canvas
 4. Deploy `azure-virtual-network` and `azure-communication-service` bundles
 5. Connect the example app to both the `azure-virtual-network` and `azure-communication-service` bundles
-6. Add the `commy:latest` docker [image](https://hub.docker.com/r/massdrivercloud/commy) to the example app
+6. Add the `email-api-example-app:latest` docker [image](https://hub.docker.com/r/massdrivercloud/email-api-example-app) to the example app
 7. Deploy the app
 8. Provision an Email service resource in the Azure portal by searching for Email Communication Services
 ![Search Email Communication Service](comm-app-example-1.png "Search Email Communication Service")
