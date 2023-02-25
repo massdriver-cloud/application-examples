@@ -10,6 +10,6 @@ for app_yaml in mass_yamls do
   puts "Checks for #{directory}"
   puts "Has README.md   <=> #{has_readme}" # I had to spaceship operator
   puts "Has operator.md <=> #{is_smooth_operator}"
-  puts "Score           <=> #{has_readme && is_smooth_operator ? "A" : (has_readme || is_smooth_operator) ? "B" : "C"}"
+  puts "Grade           <=> #{has_readme && is_smooth_operator ? "A" : (has_readme || is_smooth_operator) ? "B" : "C"}"
   puts
 end
