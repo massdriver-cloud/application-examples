@@ -1,4 +1,6 @@
-# RedwoodJS Blog Web Interface
+# RedwoodJS Static Assets
+
+**Note: During our RedwoodJS beta this bundle is implemented as a static asset server. We are actively working on various CDN implementations. If you are interested in providing feedback, please contact Cory or Dave in the [community slack.](https://join.slack.com/t/massdrivercommunity/shared_invite/zt-1sxag35w2-eYw7gatS1hwlH2y8MCmwXA)**
 
 You'll need to generate a secret before deploying this bundle.
 

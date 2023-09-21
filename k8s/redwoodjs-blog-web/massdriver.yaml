@@ -1,26 +1,28 @@
 schema: draft-07
-name: redwoodjs-blog-web
-description: A demo RedwoodJS blog
-source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/redwoodjs-blog-web
+name: "redwoodjs-blog-web"
+description: "redwoodjs-blog-web"
+source_url: github.com/YOUR_ORG/redwoodjs-blog-web
 access: private
 type: application
 
 app:
-  # Use jq expressions to build environment variables from input params or connections
-  # LOG_LEVEL: .params.configuration.log_level
-  # WEB_API_URL: '@text "https://" + .connections.blog_api.data.api.hostname'
-  # WEB_API_URL: "/graphql"
-  # WEB_API_GRAPHQL_URL: '@text "https://" + .connections.blog_api.data.api.hostname + "graphql"'
   envs: {}
-  # Define secrets to manage through massdriver
+    ### Redis Connection String
+    # REDIS_URL: '@test "rediss://" + .connections.redis.data.authentication.password + "@" + .connections.redis.data.authentication.hostname + ":" + (.connections.redis.data.authentication.port|tostring)'
+    #
+    ### Postgres Connection String
+    # DATABASE_URL: '@text "postgres://" + .connections.postgres.data.authentication.username + ":" + .connections.postgres.data.authentication.password + "@" + .connections.postgres.data.authentication.hostname + ":" + (.connections.postgres.data.authentication.port|tostring) + "/" + .params.database_name'
+    #
+    ### MySQL Connection String
+    # DATABASE_URL: '@text "mysql2://" + .connections.mysql.data.authentication.username + ":" + .connections.mysql.data.authentication.password + "@" + .connections.mysql.data.authentication.hostname + ":" + (.connections.mysql.data.authentication.port|tostring) + "/" + .params.database_name'
+    #
   secrets:
     SESSION_SECRET:
       required: true
       title: Session Secret
       description: This is the encryption key for the cookies that are stored in the user's browser when they log in. Read more [here](https://redwoodjs.com/docs/tutorial/chapter4/authentication#session-secret)
-  # Use jq expressions to select policies from artifact security blocks
-  # - .connections.sqs.data.security.iam.subscribe
-  policies: []
+  # policies:
+  # - .connections.sqs.iam.read-write
 
 params:
   examples:
@@ -29,13 +31,13 @@ params:
       image:
         repository: massdrivercloud/rw-web
         tag: latest
-      port: 8910
+      port: 8911
       resourceRequests:
         cpu: 0.2
         memory: 262144000
       ingress:
         enabled: true
-        host: redwoodjs.mdawssbx.com
+        host: enter-a-domain-you-own-here.example.com
   required:
     - namespace
     - image
@@ -183,21 +185,14 @@ params:
               required:
                 - host
                 - path
-    # Uncomment the section below to begin adding any application-specific configuration that is appropriate. See the app.envs section above for how to set environment values from these settings.
-    # configuration:
-    #   title: Configuration
-    #   description: Application specific configuration settings
-    #   type: object
-    #   properties:
-    #     log_level:
-    #       title: Log Level
-    #       type: string
 
 connections:
   required:
     - kubernetes_cluster
     - blog_api
   properties:
+    blog_api:
+      $ref: massdriver/api
     kubernetes_cluster:
       $ref: massdriver/kubernetes-cluster
     aws_authentication:
@@ -206,7 +201,10 @@ connections:
       $ref: massdriver/gcp-service-account
     azure_authentication:
       $ref: massdriver/azure-service-principal
-    blog_api:
+
+artifacts:
+  properties:
+    service:
       $ref: massdriver/api
 
 ui:
