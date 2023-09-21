@@ -1,17 +1,15 @@
 schema: draft-07
-name: redwoodjs-blog-api
-description: A demo RedwoodJS blog API
-source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/redwoodjs-blog-api
+name: "redwoodjs-blog-api"
+description: "redwoodjs-blog-api"
+source_url: github.com/YOUR_ORG/redwoodjs-blog-api
 access: private
 type: application
 
 app:
   envs:
-    DATABASE_URL: '@text "postgres://" + .connections.postgres.data.authentication.username + ":" + .connections.postgres.data.authentication.password + "@" + .connections.postgres.data.authentication.hostname + ":" + (.connections.postgres.data.authentication.port|tostring) + "/redwood"'
-  # secrets:
-  #   STRIPE_API_KEY:
-  #     title: Stripe Key
-  #     required: true
+    ## Postgres Connection String
+    DATABASE_URL: '@text "postgres://" + .connections.postgres.data.authentication.username + ":" + .connections.postgres.data.authentication.password + "@" + .connections.postgres.data.authentication.hostname + ":" + (.connections.postgres.data.authentication.port|tostring) + "/" + .params.database_name'    
+  # secrets: {}
   # policies:
   # - .connections.sqs.iam.read-write
 
@@ -28,19 +26,45 @@ params:
         memory: 262144000
       ingress:
         enabled: true
-        host: redwoodjs-api.mdawssbx.com
+        host: enter-a-domain-you-own-here.example.com
+      migration:
+        image:
+          repository: massdrivercloud/rw-console
+          tag: latest
   required:
     - namespace
     - image
     - resourceRequests
     - replicas
     - ingress
+    - migration
   properties:
     namespace:
-      title: Kubernetes Namespace
-      description: Application will be deployed into this namespace. If the namespace doesn't exist, it will be created.
-      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/k8s-resource-name.json
-      default: default
+      $ref: https://raw.githubusercontent.com/massdriver-cloud/json-schemas/main/k8s/namespace.json
+    migration:
+      type: object
+      title: Database Migrations
+      required:
+      - image
+      properties:
+        image:
+          description: Container image to run database migrations in.
+          type: object
+          required:
+            - repository
+            - tag    
+          properties:    
+            repository:
+              $md.immutable: true
+              title: Repository
+              # Massdriver automatically configures your Kubernetes clusters to have access to your cloud container repositories.
+              # Just set the full URI here or remove this field and hard code it in your values.yaml file.
+              description: Container repository to use for this application.
+              type: string
+            tag:
+              title: Image Tag
+              $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
+              default: latest
     image:
       title: Container Image
       type: object
@@ -195,7 +219,7 @@ connections:
 
 artifacts:
   properties:
-    public_api:
+    service:
       $ref: massdriver/api
 
 ui:
@@ -227,3 +251,5 @@ ui:
       - host
       - path
       - "*"
+
+      

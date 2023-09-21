@@ -3,7 +3,5 @@ module "application_alarms" {
   md_metadata       = var.md_metadata
   deployment_alarms = true
   hpa_alarms        = var.replicas.autoscalingEnabled
-
-  # TODO: only enable if migrations are enabled
-  job_alarms = true
+  job_alarms        = local.migration.enabled
 }

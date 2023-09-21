@@ -2,7 +2,7 @@ locals {
   # etc can contain any custom information you need to pass to downstream services.
   # These values are _not_ type checked by Massdriver.
   artifact_data_etc = {
-    anything_you_want = "true"
+    # any_fields_you_need_to_pass_downstream = "put them here"
   }
 
   public_artifact_data = {
@@ -24,10 +24,10 @@ locals {
   }
 }
 
-resource "massdriver_artifact" "public_api" {
-  field                = "public_api"
-  provider_resource_id = "${var.md_metadata.name_prefix}-public-api"
-  name                 = "Public API endpoint for ${var.md_metadata.name_prefix}"
+resource "massdriver_artifact" "service" {
+  field                = "service"
+  provider_resource_id = "${var.md_metadata.name_prefix}-service"
+  name                 = "Endpoint service for ${var.md_metadata.name_prefix}"
   artifact = jsonencode({
     data  = local.public_artifact_data
     specs = local.artifact_specs
