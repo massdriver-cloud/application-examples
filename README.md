@@ -56,11 +56,12 @@ We're in the process of moving all of this information into the `operator.md` fo
 
 **One-time local setup**
 + Install the Massdriver [CLI](https://docs.massdriver.cloud/bundles/walk-through#download-the-massdriver-cli).
-+ You'll need a [Service Account](https://docs.massdriver.cloud/platform/service-accounts) created in your Massdriver organization.
-+ Don't forget to edit your `.bashrc`, `.zshrc`, `.envrc`, etc... so that every future terminal session has the `MASSDRIVER_API_KEY` environment variable set.
++ You'll need a [Service Account](https://docs.massdriver.cloud/cli/overview#setup) created in your Massdriver organization.
++ You'll need the [Organization ID](https://docs.massdriver.cloud/cli/overview#setup) of your Massdriver organization.
++ Don't forget to edit your `.bashrc`, `.zshrc`, `.envrc`, etc... so that every future terminal session has the `MASSDRIVER_API_KEY` and `MASSDRIVER_ORG_ID` environment variables set.
 
 **Publish and run the app**
-+ Switch into the directory of any example and run, `mass app publish`. This will create a new application bundle in your Massdriver organization.
++ Switch into the directory of any example and run, `mass bundle publish`. This will create a new application bundle in your Massdriver organization.
 + In the Massdriver UI, drag your new application bundle to the canvas. Connect it to other packages and you're ready to deploy!
 
 ## Connect

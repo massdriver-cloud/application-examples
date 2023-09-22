@@ -159,7 +159,7 @@ connections:
     azure_virtual_network:
       $ref: massdriver/azure-virtual-network
     storage:
-      $ref: massdriver/azure-storage-account
+      $ref: massdriver/azure-storage-account-blob
 
 artifacts:
   required: []
