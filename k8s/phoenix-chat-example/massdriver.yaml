@@ -80,6 +80,7 @@ params:
           $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/docker-image-tag.json
           default: latest
     resourceRequests:
+      title: Resources
       type: object
       required:
         - cpu
