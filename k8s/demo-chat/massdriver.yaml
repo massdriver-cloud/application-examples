@@ -1,7 +1,7 @@
 schema: draft-07
 name: demo-chat
 description: A chat application for demos
-source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/demo-chat
+# source_url:
 access: private
 type: application
 
