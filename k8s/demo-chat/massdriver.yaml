@@ -1,7 +1,7 @@
 schema: draft-07
 name: demo-chat
 description: A chat application for demos
-source_url: github.com/massdriver-cloud/application-examples/tree/main/k8s/demo-chat
+source_url: https://github.com/massdriver-cloud/application-examples/tree/main/k8s/demo-chat
 access: private
 type: application
 
@@ -193,20 +193,20 @@ connections:
   required:
     - kubernetes_cluster
     - postgres
-    # - sessions
+    - sessions
   properties:
     kubernetes_cluster:
       $ref: massdriver/kubernetes-cluster
+    postgres:
+      $ref: massdriver/postgresql-authentication
+    sessions:
+      $ref: massdriver/aws-dynamodb-table
     aws_authentication:
       $ref: massdriver/aws-iam-role
-    # sessions:
-    #   $ref: massdriver/aws-dynamodb-table
     gcp_authentication:
       $ref: massdriver/gcp-service-account
     azure_authentication:
       $ref: massdriver/azure-service-principal
-    postgres:
-      $ref: massdriver/postgresql-authentication
 
 ui:
   ## If you need to allow an end user to select the container repository at deploy time, our smart widget can be used.
