@@ -88,3 +88,14 @@ resource "aws_iam_role_policy_attachment" "function_logging_policy_attachment" {
   role       = local.role_name
   policy_arn = aws_iam_policy.function_logging_policy.arn
 }
+
+# module "budget" {
+#   source       = "github.com/massdriver-cloud/terraform-modules//aws/forecasted-monthly-cost-budget"
+#   limit_amount = var.budget.limit_amount
+#   md_metadata  = var.md_metadata
+
+#   subscriber_email_addresses = [
+#     # var.budget.email_addresses
+#     var.md_metadata.target.contact_email
+#   ]
+# }
