@@ -12,6 +12,10 @@ resource "aws_api_gateway_deployment" "main" {
   lifecycle {
     create_before_destroy = true
   }
+
+  triggers = {
+    deployed_at = "${timestamp()}"
+  }
 }
 
 resource "aws_lambda_permission" "main" {

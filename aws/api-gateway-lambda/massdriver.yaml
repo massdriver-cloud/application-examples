@@ -1,6 +1,6 @@
 schema: draft-07
 name: api-gateway-lambda
-description: FizzBuzz solver driven by an API Gateway
+description: Handle API Gateway requests with a Lambda function
 source_url: github.com/massdriver-cloud/application-templates/aws/api-gateway-lambda
 access: private
 type: application
@@ -14,6 +14,8 @@ steps:
 
 params:
   properties:
+    # budget:
+    #   $ref: https://raw.githubusercontent.com/massdriver-cloud/terraform-modules/main/aws/forecasted-monthly-cost-budget/schema.json
     api:
       type: object
       title: API Settings
@@ -124,6 +126,7 @@ ui:
     - api
     - runtime
     - observability
+    - "*"
   api:
     ui:order:
       - path
@@ -153,5 +156,6 @@ app:
   envs:
     LOG_RETENTION: .params.observability.retention_days
   # IAM permissions can be assigned to this workload using jq to pull iam from connections
-  policies: []
+  policies:
+    []
     # - .connections.k8s_auth.data.security.iam.subscribe
